@@ -26,11 +26,13 @@ describe('User adding/deleting products to Cart', () => {
 				cart.should.have.property('count')
 				cart.should.have.property('dateAdded')
 				cart.should.have.property('status')
+				cart.should.have.property('userId')
 
           		(cart.products).should.be.a('array')
           		(cart.count).should.be.a('array')
           		(cart.dateAdded).should.be.a('array')
           		(cart.status).should.be.a('string') //"" initial value
+          		(cart.status).should.be.a('string') // user ID
 
           		(cart.status).should.equal('')
 
@@ -54,6 +56,7 @@ describe('User adding/deleting products to Cart', () => {
 				cart.should.have.property('count')
 				cart.should.have.property('dateAdded')
 				cart.should.have.property('status')
+				cart.should.have.property('userId')
 
           		(cart.products).should.be.a('array')
           		(cart.count).should.be.a('array')
@@ -89,6 +92,7 @@ describe('User adding/deleting products to Cart', () => {
 				cart.should.have.property('count')
 				cart.should.have.property('dateAdded')
 				cart.should.have.property('status')
+				cart.should.have.property('userId')
 
           		(cart.products).should.be.a('array')
           		(cart.count).should.be.a('array')
@@ -122,6 +126,7 @@ describe('User adding/deleting products to Cart', () => {
 				cart.should.have.property('count')
 				cart.should.have.property('dateAdded')
 				cart.should.have.property('status')
+				cart.should.have.property('userId')
 
           		(cart.products).should.be.a('array')
           		(cart.count).should.be.a('array')
@@ -155,6 +160,7 @@ describe('User adding/deleting products to Cart', () => {
 				cart.should.have.property('count')
 				cart.should.have.property('dateAdded')
 				cart.should.have.property('status')
+				cart.should.have.property('userId')
 
           		(cart.products).should.be.a('array')
           		(cart.count).should.be.a('array')

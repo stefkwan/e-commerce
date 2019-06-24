@@ -34,10 +34,7 @@ const userSchema = new Schema({
 		type: String,
 		default: "password"
 	},
-	transaction: [{
-		type: { type: Schema.ObjectId, ref: 'Cart' },
-		default: []
-	}]
+	transaction: [{ type: Schema.ObjectId, ref: 'Cart' }]
 });
 
 userSchema.pre('save', function(next){

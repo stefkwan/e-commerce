@@ -2,31 +2,26 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const cartSchema = new Schema({
-	title: {
+	producs: [{
 		type: String,
 		default: "no title"
-	},
-	content: {
+	}],
+	count: [{
 		type: String,
 		default: "no content"
-	},
-	status: {
-		type: String,
-		default: "draft"
-	},
-	created_at: {
+	}],
+	dateAdded: [{
 		type: Date,
 		default: new Date()
-	},
-	owner: { 
-		type: Schema.Types.ObjectId, 
-		ref: 'User' 
-	},
-	featured_image:{
+	}],
+	status: {
 		type: String,
 		default: ""
 	},
-	tags:[{type: String}]
+	userId: { 
+		type: Schema.Types.ObjectId, 
+		ref: 'User' 
+	}
 });
 
 const Cart = mongoose.model('Cart',cartSchema)

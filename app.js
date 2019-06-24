@@ -11,6 +11,15 @@ mongoose.connect('mongodb://localhost:27017/ecommerce-' + process.env.NODE_ENV);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+app.get('/users', function(req, res, next) {
+  Player
+    .find({})
+    .then(function(players) {
+      res.status(200).json(players);
+    })
+    .catch(next);
+});
+
 app.use(function(err, req, res, next) {
   console.log(err);
   res.status(500).json({

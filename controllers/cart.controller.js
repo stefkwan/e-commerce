@@ -78,7 +78,7 @@ class ControllerCart {
 			return Cart.update({_id: currentCart._id}, currentCart, {new:true})
 		})
 		.then(updatedCart => {
-			res.json(currentCart)
+			res.status(200).json(currentCart)
 		})
 		.catch(next)
 	}
@@ -120,7 +120,7 @@ class ControllerCart {
 		})
 		.then(updatedCart => {
 			console.log("saved updated cart", currentCart)
-			res.json(currentCart)
+			res.status(200).json(currentCart)
 		})
 		.catch(next)
 		

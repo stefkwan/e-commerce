@@ -27,12 +27,15 @@ const authentication = (req, res, next) => {
 //auth for product
 const authProduct = (req, res, next) => {
 	let userEmail = req.decode.email
+	console.log(req.decode.email, "emaillllllll")
+
 	//only let admin change, admin declared here
 	let admins = ["admin@ecommerce.com", "admin1@ecommerce.com", "admin2@ecommerce.com"]
-	if (admins.include(userEmail)){
+	if (admins.includes(userEmail)){
 		//logged in user is an admin
 		next()
 	} else {
+
 		next({status: 403})
 	}
 }

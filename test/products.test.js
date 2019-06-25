@@ -46,7 +46,7 @@ describe('Products CRUD', () => {
 			chai.request(app)
 			.post('/users/login')
 			.send({
-				name: "admin1",
+				email: "admin1@ecommerce.com",
 				password: "password admin"
 			})
 			.then( res => {
@@ -65,6 +65,7 @@ describe('Products CRUD', () => {
 	})
 
 	describe('GET /products', () => {
+		console.log(access_token)
 		it('should send array of products with 200 status', done => {
 			chai.request(app)
 			.get('/products')

@@ -34,7 +34,7 @@ after(done => {
 // 	clearProduct()
 // })
 
-describe('User adding/deleting products to Cart', () => {
+describe.only('User adding/deleting products to Cart', () => {
     //create a new cart when user register or checks out,
     let access_token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0Y2FydEBlY29tbWVyY2UuY29tIn0.TVEsf4-9QIylxQjSVCaFQVyQVfrVCNDFYRUtEEUcYOE`
     //cart has userID of new/logged in user and status ""
@@ -62,13 +62,11 @@ describe('User adding/deleting products to Cart', () => {
                         expect(newUser).to.have.property('email')
                         expect(newUser).to.have.property('address')
                         expect(newUser).to.have.property('password')
-                        expect(newUser).to.have.property('transaction')
 
                         expect(newUser.name).to.equal('nama user');
                         expect(newUser.email).to.equal('admin@ecommerce.com');
                         expect(newUser.address).to.equal('alamat user');
                         // expect(newUser.password).to.equal('password user');
-                        expect(newUser.transaction).to.be.an('array');
 
                         //should also create a new cart with this user ID and status ""
                         done()
@@ -169,11 +167,72 @@ describe('User adding/deleting products to Cart', () => {
         })
     })
 
+	// describe('POST /users', () => {
+	// 	it('should send an object with 201 status', done => {
+	// 		chai.request(app)
+	// 		.post('/users')
+	// 		.send({
+	// 			name: "nama user", 
+	// 			email: "admin@ecommerce.com", 
+	// 			address: "alamat user",
+	// 			password: "password user"
+	// 		})
+	// 		.then( res => {
+	// 			res.should.have.status(201)
+
+	// 			let newUser = res.body
+	// 			newUser.should.be.a('object')
+
+	// 			newUser.should.have.property('name')
+	// 			newUser.should.have.property('email')
+	// 			newUser.should.have.property('address')
+	// 			newUser.should.have.property('password')
+
+ //          		(newUser.name).should.equal('nama user');
+ //          		(newUser.email).should.equal('admin@ecommerce.com');
+ //          		(newUser.address).should.equal('alamat user');
+ //          		(newUser.address).should.equal('password user');
+
+ //          		//should also create a new cart with this user ID and status ""
+
+ //          		done()
+	// 		})
+	// 		.catch(err => {
+	// 			console.log(err)
+	// 		})
+	// 	})
+	// })
+
+	// describe('POST /users/login', () => {
+	// 	it('should send array of users with 200 status', done => {
+	// 		chai.request(app)
+	// 		.post('/users/login')
+	// 		.send({
+	// 			email: "admin@ecommerce.com", 
+	// 			password: "password user"
+	// 		})
+	// 		.then( res => {
+	// 			res.should.have.status(200)
+	// 			(res.body).should.have.property('access_token')
+	// 			(res.body.access_token).should.be.a('string')
+
+	// 			access_token = (res.body.access_token)
+	// 			done()
+	// 		})
+	// 		.catch( err => {
+	// 			console.log(err)
+	// 		})
+	// 	})
+	// })
+
     let productId = "product ID"
     describe('create a product POST /products', () => {
+    	//login admin first
+
         it('should send an product object with 201 status', done => {
             chai.request(app)
                 .post('/products')
+				.set('access_token', access_token)
                 .send({
                     name: "nama produk baru",
                     image: "url image baru",
@@ -321,7 +380,7 @@ describe('User adding/deleting products to Cart', () => {
                     console.log(err)
                 })
         })
-        
+
 	    it('should send cart with checked-out status, res 200 status', done => {
 	        chai.request(app)
 	            .patch('/cart/checkout')

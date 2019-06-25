@@ -2,13 +2,13 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const cartSchema = new Schema({
-	producs: [{
-		type: String,
-		default: "no title"
+	products: [{ 
+		type: Schema.Types.ObjectId, 
+		ref: 'Products' 
 	}],
 	count: [{
-		type: String,
-		default: "no content"
+		type: Number,
+		default: 0
 	}],
 	dateAdded: [{
 		type: Date,

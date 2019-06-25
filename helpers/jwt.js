@@ -7,7 +7,7 @@ const generateToken = (input) => {
 	 algorithm:  "HS256"
 	};
 	
-	return jwt.sign({input}, bash.bashrc.JWT_SECRET, signOptions)
+	return jwt.sign({input}, process.env.JWT_SECRET, signOptions)
 }
 
 const verifyToken = (token) => {
@@ -17,7 +17,7 @@ const verifyToken = (token) => {
 	 algorithm:  "HS256"
 	};
 
-    return jwt.verify(token, bash.bashrc.JWT_SECRET, verifyOptions)
+    return jwt.verify(token, process.env.JWT_SECRET, verifyOptions)
 }
 
 module.exports = {

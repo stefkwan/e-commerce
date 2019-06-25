@@ -4,7 +4,7 @@ const chaiHttp = require('chai-http');
 const app = require('../app');
 
 chai.use(chaiHttp);
-const should = chai.should()
+chai.should()
 
 describe('Products CRUD', () => {
 	describe('GET /products', () => {
@@ -54,6 +54,9 @@ describe('Products CRUD', () => {
           		productId = newProduct._id
 
           		done()
+			})
+			.catch(err => {
+				console.log(err)
 			})
 		})
 	})
@@ -114,6 +117,9 @@ describe('Products CRUD', () => {
 
           		done()
 			})
+			.catch(err => {
+				console.log(err)
+			})
 		})
 	})
 
@@ -131,6 +137,9 @@ describe('Products CRUD', () => {
           		(body.deletedCount).should.equal(1);
 
           		done()
+			})
+			.catch(err => {
+				console.log(err)
 			})
 		})
 	})

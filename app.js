@@ -1,4 +1,8 @@
-if(process.env.NODE_ENV === "test" || process.env.NODE_ENV === "development"){
+let pEnv = process.env.NODE_ENV;
+if(pEnv === "test" || 
+	pEnv === "testWin" ||
+	pEnv === "dev" ||
+	pEnv === "devWin"){
   require('dotenv').config()
 }
 
@@ -25,5 +29,8 @@ app.use(function(err, req, res, next) {
     message: 'Whoa how did you get here?',
   });
 });
+
+app.listen(port, () => 
+	console.log(`Server Starts on ${port}`))
 
 module.exports = app;

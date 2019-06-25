@@ -43,7 +43,7 @@ class ControllerProduct {
   static create(req, res, next){
     Product.create(req.body)
     .then(result => {
-      res.json(result)
+      res.status(201).json(result)
     })
     .catch(next)
   }

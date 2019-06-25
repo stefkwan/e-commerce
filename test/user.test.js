@@ -2,9 +2,14 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 
 const app = require('../app');
+const clearUser = require('../helpers/clear').clearUser
 
 chai.use(chaiHttp);
-const should = chai.should()
+chai.should()
+
+after( done => {
+	clearUser(done)
+})
 
 describe('Users CRUD', () => {
 	describe('GET /users', () => {
@@ -54,6 +59,9 @@ describe('Users CRUD', () => {
           		//should also create a new cart with this user ID and status ""
 
           		done()
+			})
+			.catch(err => {
+				console.log(err)
 			})
 		})
 	})

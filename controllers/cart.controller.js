@@ -17,7 +17,7 @@ class ControllerCart {
 		let userId = req.decode.id
 		Cart.create({userId: userId})
 		.then( result => {
-			res.json(result)
+			res.status(201).json(result)
 		})
 		.catch(next)
 	}

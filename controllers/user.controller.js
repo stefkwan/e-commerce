@@ -15,7 +15,6 @@ class ControllerUser {
 
     User.findOneAndUpdate({email: userEmail}, input, {new: true})
     .then(updated => {
-      console.log(updated)
       res.json(updated)
     })
     .catch(next)
@@ -34,7 +33,7 @@ class ControllerUser {
     const input = { name, email, address, password }
     User.create(input)
     .then(result => {
-      res.json(result)
+      res.status(201).json(result)
     })
     .catch(next)
   }

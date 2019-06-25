@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const secret="secret"
 
 const generateToken = (input) => {
 	let signOptions = {
@@ -6,8 +7,8 @@ const generateToken = (input) => {
 	 expiresIn:  "1d",
 	 algorithm:  "HS256"
 	};
-	
-	return jwt.sign({input}, process.env.JWT_SECRET, signOptions)
+
+	return jwt.sign({input}, secret, signOptions)
 }
 
 const verifyToken = (token) => {
@@ -17,7 +18,7 @@ const verifyToken = (token) => {
 	 algorithm:  "HS256"
 	};
 
-    return jwt.verify(token, process.env.JWT_SECRET, verifyOptions)
+    return jwt.verify(token, secret, verifyOptions)
 }
 
 module.exports = {

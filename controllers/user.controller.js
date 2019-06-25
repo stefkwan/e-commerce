@@ -29,11 +29,18 @@ class ControllerUser {
   }
 
   static create(req, res, next) {
+    console.log("post user")
     const { name, email, address, password } = req.body
     const input = { name, email, address, password }
+    let newUser = {}
     User.create(input)
     .then(result => {
-      res.status(201).json(result)
+      newUser = result
+      //also create an empty cart for the user
+      return Cart.create({userId: newUser._id})
+    })
+    .then(newCart => {
+      res.status(201).json(newUser)
     })
     .catch(next)
   }

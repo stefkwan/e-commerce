@@ -24,14 +24,21 @@ class ControllerCart {
 
 	static checkout(req, res, next){
 		let userId = req.decode.id
+		let updatedCart = {}
 		Cart.findOneAndUpdate(
 			{userId: userId, status: ""}, 
 			{status: "checked-out"}, 
 			{new: true})
 		.then(result => {
+			updatedCart = result
 			console.log(result)
 			console.log("==========")
-			res.json(result)
+			//then create new cart for the user
+			return Cart.create({userId: userId})
+			// res.json(result)
+		})
+		.then(newEmptyCart => {
+			res.json(updatedCart)
 		})
 		.catch(next)
 	}
@@ -56,15 +63,17 @@ class ControllerCart {
 			if (currentCart.products.includes(productId)){
 				let itemIndex = currentCart.products.indexOf(productId)
 				currentCart.count[itemIndex]++
-
-				res.json(currentCart)
 			} else { //first time item added to cart
 				currentCart.products.push(productId)
 				currentCart.count.push(1)
 				currentCart.dateAdded.push(new Date())
 
-				res.json(currentCart)
 			}
+
+			return Cart.update({_id: currentCart._id}, currentCart, {new:true})
+		})
+		.then(updatedCart => {
+			res.json(currentCart)
 		})
 		.catch(next)
 	}
@@ -89,6 +98,12 @@ class ControllerCart {
 			if (currentCart.products.includes(productId)){
 				let itemIndex = currentCart.products.indexOf(productId)
 				currentCart.count[itemIndex]--
+				if (currentCart.count[itemIndex] == 0){
+					//remove product from cart if count is 0
+					currentCart.products.splice(itemIndex, 1)
+					currentCart.count.splice(itemIndex, 1)
+					currentCart.dateAdded.splice(itemIndex, 1)
+				}
 
 				res.json(currentCart)
 			} else { //nothing to delete

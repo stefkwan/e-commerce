@@ -17,6 +17,9 @@ const routes = require('./routes')
 const port = 3000;
 
 mongoose.connect('mongodb://localhost:27017/ecommerce-' + process.env.NODE_ENV);
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());

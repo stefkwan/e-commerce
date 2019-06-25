@@ -1,18 +1,25 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 let clearUser = require('../helpers/clear').clearUser
+let clearCart = require('../helpers/clear').clearCart
 
 const app = require('../app');
 
 chai.use(chaiHttp);
 var expect = require('chai').expect
 
+after( done => {
+	clearUser()
+	clearCart()
+	done()
+})
+
 describe('User adding/deleting products to Cart', () => {
     //create a new cart when user register or checks out,
 	let access_token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0Y2FydEBlY29tbWVyY2UuY29tIn0.TVEsf4-9QIylxQjSVCaFQVyQVfrVCNDFYRUtEEUcYOE`
     //cart has userID of new/logged in user and status ""
-	describe('POST /cart', () => {
-		describe('create new user first POST /users', () => {
+	describe('creating a new cart POST /cart', () => {
+		describe('create new user first, POST /users', () => {
 			it.only('should send an object with 201 status', done => {
 				chai.request(app)
 				.post('/users')
@@ -77,7 +84,7 @@ describe('User adding/deleting products to Cart', () => {
 
 		describe('then create cart for the user POST /cart', () => {
 		
-			it.only('should send an object with 200 status', done => {
+			it.only('should send an cart object with 200 status', done => {
 				chai.request(app)
 				.post('/cart')
 				.set('access_token', access_token)
@@ -111,7 +118,7 @@ describe('User adding/deleting products to Cart', () => {
 	})
 
 	describe('GET /cart', () => {
-		it.only('should send array of users with 200 status', done => {
+		it.only('should send a cart with 200 status', done => {
 			chai.request(app)
 			.get('/cart') //get cart with correct userId and "" status
 			.set('access_token', access_token)
@@ -142,15 +149,11 @@ describe('User adding/deleting products to Cart', () => {
 		})
 	})
 
-	describe('PATCH /cart/checkout', () => {
-		it('should send object with 200 status', done => {
+	describe('checking out a cart, PATCH /cart/checkout', () => {
+		it.only('should send cart with checked-out status, res 200 status', done => {
 			chai.request(app)
-			.post('/cart/checkout')
+			.patch('/cart/checkout')
 			.set('access_token', access_token)
-			.send({
-				cartId: cartId	//mark cart as checked-out, 
-								//then create new cart for user
-			})
 			.then( res => {
 				expect(res).to.have.status(200)
 

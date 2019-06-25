@@ -8,7 +8,8 @@ chai.use(chaiHttp);
 chai.should()
 
 after( done => {
-	clearUser(done)
+	clearUser()
+	done()
 })
 
 describe('Users CRUD', () => {

@@ -26,8 +26,11 @@ class ControllerCart {
 		let userId = req.decode.id
 		Cart.findOneAndUpdate(
 			{userId: userId, status: ""}, 
-			{status: "checked-out"})
+			{status: "checked-out"}, 
+			{new: true})
 		.then(result => {
+			console.log(result)
+			console.log("==========")
 			res.json(result)
 		})
 		.catch(next)

@@ -28,9 +28,9 @@ app.use('/', routes);
 
 app.use(function(err, req, res, next) {
   console.log(err);
-  res.status(500).json({
-    message: 'Whoa how did you get here?',
-  });
+  let status = err.status || 500
+  let message = err.message || "error with no error message passed"
+  res.status(status).json(message);
 });
 
 app.listen(port, () => 

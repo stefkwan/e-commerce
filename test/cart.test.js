@@ -8,15 +8,15 @@ const app = require('../app');
 chai.use(chaiHttp);
 var expect = require('chai').expect
 
-after( (done1, done2) => {
-	console.log("inside cart test after hook")
-	clearUser(done1)
-	clearCart(done2)
+before( done => {
+	console.log("inside cart test before hook")
+	clearUser(done)
 })
 
-function foo(d) {
-  return Promise.resolve(d);
-}
+after(done => {
+	console.log("inside cart test after hook")
+	clearCart(done)
+})
 
 describe('User adding/deleting products to Cart', () => {
     //create a new cart when user register or checks out,
@@ -24,7 +24,7 @@ describe('User adding/deleting products to Cart', () => {
     //cart has userID of new/logged in user and status ""
 	describe('creating a new cart POST /cart', () => {
 		describe('create new user first, POST /users', () => {
-			it.only('should send an object with 201 status', done => {
+			it('should send an object with 201 status', done => {
 				chai.request(app)
 				.post('/users')
 				.send({
@@ -64,7 +64,7 @@ describe('User adding/deleting products to Cart', () => {
 		})
 
 		describe('then login to get access token POST /users/login', () => {
-			it.only('should send logged in user with 200 status', done => {
+			it('should send logged in user with 200 status', done => {
 				chai.request(app)
 				.post('/users/login')
 				.send({
@@ -88,7 +88,7 @@ describe('User adding/deleting products to Cart', () => {
 
 		describe('then create cart for the user POST /cart', () => {
 		
-			it.only('should send an cart object with 200 status', done => {
+			it('should send an cart object with 200 status', done => {
 				chai.request(app)
 				.post('/cart')
 				.set('access_token', access_token)
@@ -122,7 +122,7 @@ describe('User adding/deleting products to Cart', () => {
 	})
 
 	describe('GET /cart', () => {
-		it.only('should send a cart with 200 status', done => {
+		it('should send a cart with 200 status', done => {
 			chai.request(app)
 			.get('/cart') //get cart with correct userId and "" status
 			.set('access_token', access_token)
@@ -154,7 +154,7 @@ describe('User adding/deleting products to Cart', () => {
 	})
 
 	describe('checking out a cart, PATCH /cart/checkout', () => {
-		it.only('should send cart with checked-out status, res 200 status', done => {
+		it('should send cart with checked-out status, res 200 status', done => {
 			chai.request(app)
 			.patch('/cart/checkout')
 			.set('access_token', access_token)
@@ -189,7 +189,7 @@ describe('User adding/deleting products to Cart', () => {
 	//adding/deleting products from cart
 	describe('PATCH /cart/add and /cart/del', () => {
 		describe('create a product POST /products', () => {
-			it.only('should send an product object with 201 status', done => {
+			it('should send an product object with 201 status', done => {
 				chai.request(app)
 				.post('/products')
 				.send({
@@ -226,7 +226,7 @@ describe('User adding/deleting products to Cart', () => {
 
 		describe('adding product to cart, PATCH /cart/add', function() {
 			this.timeout(5000)
-			it.only('should send an object with 200 status', done => {
+			it('should send an object with 200 status', done => {
 				console.log(productId)
 				console.log("-------------productId in cart add---")
 				chai.request(app)
@@ -266,7 +266,7 @@ describe('User adding/deleting products to Cart', () => {
 
 		describe('decrement/delete a product from cart, PATCH /cart/del', function() {
 			this.timeout(5000)
-			it.only('should send an object with 200 status', done => {
+			it('should send an object with 200 status', done => {
 				
 				chai.request(app)
 				.patch('/cart/del')

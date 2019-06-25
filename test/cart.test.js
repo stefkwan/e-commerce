@@ -111,7 +111,7 @@ describe('User adding/deleting products to Cart', () => {
 	})
 
 	describe('GET /cart', () => {
-		it('should send array of users with 200 status', done => {
+		it.only('should send array of users with 200 status', done => {
 			chai.request(app)
 			.get('/cart') //get cart with correct userId and "" status
 			.set('access_token', access_token)

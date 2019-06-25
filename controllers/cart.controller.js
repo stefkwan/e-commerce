@@ -6,7 +6,7 @@ class ControllerCart {
   
 	static findOne(req, res, next){
 		let userId = req.decode.id
-		Cart.find({userId: userId, status: ""})
+		Cart.findOne({userId: userId, status: ""})
 		.then( result => {
 			res.json(result)
 		})

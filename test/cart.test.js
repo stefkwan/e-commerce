@@ -53,7 +53,7 @@ describe('User adding/deleting products to Cart', () => {
 		})
 
 		describe('then login to get access token POST /users/login', () => {
-			it('should send array of users with 200 status', done => {
+			it.only('should send logged in user with 200 status', done => {
 				chai.request(app)
 				.post('/users/login')
 				.send({

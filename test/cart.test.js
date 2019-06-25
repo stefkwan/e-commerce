@@ -73,10 +73,10 @@ describe('User adding/deleting products to Cart', () => {
 		})
 	})
 
-	describe('POST /cart/checkout', () => {
+	describe('PATCH /cart/checkout', () => {
 		it('should send object with 200 status', done => {
 			chai.request(app)
-			.post('/card/checkout')
+			.post('/cart/checkout')
 			.set('access_token', access_token)
 			.send({
 				cartId: cartId	//mark cart as checked-out, 

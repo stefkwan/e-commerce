@@ -1,8 +1,14 @@
+if(process.env.NODE_ENV === "test" || process.env.NODE_ENV === "development"){
+  require('dotenv').config()
+}
+
+console.log("at app.js")
+
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 
-const User = require('./models/user');
+const routes = require('./routes')
 
 const port = 3000;
 
@@ -11,14 +17,7 @@ mongoose.connect('mongodb://localhost:27017/ecommerce-' + process.env.NODE_ENV);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.get('/users', function(req, res, next) {
-  Player
-    .find({})
-    .then(function(players) {
-      res.status(200).json(players);
-    })
-    .catch(next);
-});
+app.use('/', routes);
 
 app.use(function(err, req, res, next) {
   console.log(err);

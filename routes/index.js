@@ -1,16 +1,10 @@
 const router = require('express').Router()
-const connect = require('../helpers/connect.js')
 const userRoutes = require('./user.routes')
 const cartRoutes = require('./cart.routes')
-
-//connect to mongoose
-router.use((req,res,next) => {
-	connect()
-		.then(() => next())
-		.catch(next)
-})
+const productRoutes = require('./product.routes')
 
 router.use('/users', userRoutes)
-router.use('/cart', cartCoutes)
+router.use('/cart', cartRoutes)
+router.use('/products', productRoutes)
 
 module.exports = router

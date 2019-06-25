@@ -4,15 +4,13 @@ const Schema = mongoose.Schema
 const cartSchema = new Schema({
 	products: [{ 
 		type: Schema.Types.ObjectId, 
-		ref: 'Products' 
+		ref: 'Products'
 	}],
 	count: [{
-		type: Number,
-		default: 0
+		type: Number
 	}],
 	dateAdded: [{
-		type: Date,
-		default: new Date()
+		type: Date
 	}],
 	status: {
 		type: String,

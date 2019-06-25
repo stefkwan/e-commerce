@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const controllerUser = require('../controllers/controlUsers')
+const controllerUser = require('../controllers/user.controller.js')
 const isAuthenticated = require('../middleware/auth.js').authentication
 const isAuthorized = require('../middleware/auth.js').authUser
 

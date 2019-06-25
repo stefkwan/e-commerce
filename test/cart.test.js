@@ -77,7 +77,7 @@ describe('User adding/deleting products to Cart', () => {
 
 		describe('then create cart for the user POST /cart', () => {
 		
-			it('should send an object with 200 status', done => {
+			it.only('should send an object with 200 status', done => {
 				chai.request(app)
 				.post('/cart')
 				.set('access_token', access_token)

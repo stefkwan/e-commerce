@@ -9,9 +9,14 @@ chai.use(chaiHttp);
 var expect = require('chai').expect
 
 after( done => {
-	clearUser()
-	clearCart()
-	done()
+	console.log("inside cart test after hook")
+	clearUser(waitClearUser =>{
+		waitClearUser()
+	})
+	clearCart(waitClearCart =>{
+		waitClearCart()
+		done()
+	})
 })
 
 describe('User adding/deleting products to Cart', () => {
@@ -184,40 +189,79 @@ describe('User adding/deleting products to Cart', () => {
 	let productId = "product ID"
 	//adding/deleting products from cart
 	describe('PATCH /cart/add', () => {
-		it('should send an object with 200 status', done => {
-			chai.request(app)
-			.patch('/cart/add')
-			.set('access_token', access_token)
-			.send({
-				productId: productId
+		describe('create a product then add to cart, POST /products', () => {
+			it.only('should send an product object with 201 status', done => {
+				chai.request(app)
+				.post('/products')
+				.send({
+					name: "nama produk baru",
+					image: "url image baru",
+					price: 205000,
+					stock: 25
+				})
+				.then( res => {
+					expect(res).to.have.status(201)
+
+					let newProduct = res.body
+					expect(newProduct).to.be.a('object')
+
+					expect(newProduct).to.have.property('name')
+					expect(newProduct).to.have.property('image')
+					expect(newProduct).to.have.property('price')
+					expect(newProduct).to.have.property('stock')
+
+	          		expect(newProduct.name).to.equal('nama produk baru');
+	          		expect(newProduct.image).to.equal('url image baru');
+	          		expect(newProduct.price).to.equal(205000);
+	          		expect(newProduct.stock).to.equal(25);
+
+	          		productId = newProduct._id
+
+	          		done()
+				})
+				.catch(err => {
+					console.log(err)
+				})
 			})
-			.then( res => {
-				expect(res).to.have.status(200)
+	
+			describe('adding product to cart, PATCH /cart/add', () => {
+				it.only('should send an object with 200 status', done => {
+					chai.request(app)
+					.patch('/cart/add')
+					.set('access_token', access_token)
+					.send({
+						productId: productId
+					})
+					.then( res => {
+						expect(res).to.have.status(200)
 
-				//check from access token who is logged in, 
-				//then add to logged in user's cart
-				let cart = res.body
-				expect(cart).to.have.property('products') //ref to products schema
-				expect(cart).to.have.property('count')
-				expect(cart).to.have.property('dateAdded')
-				expect(cart).to.have.property('status')
-				expect(cart).to.have.property('userId')
+						//check from access token who is logged in, 
+						//then add to logged in user's cart
+						let cart = res.body
+						expect(cart).to.have.property('products') //ref to products schema
+						expect(cart).to.have.property('count')
+						expect(cart).to.have.property('dateAdded')
+						expect(cart).to.have.property('status')
+						expect(cart).to.have.property('userId')
 
-          		expect(cart.products).to.be.a('array')
-          		expect(cart.count).to.be.a('array')
-          		expect(cart.dateAdded).to.be.a('array')
-          		expect(cart.status).to.be.a('string') //"" or "checked-out"
+		          		expect(cart.products).to.be.a('array')
+		          		expect(cart.count).to.be.a('array')
+		          		expect(cart.dateAdded).to.be.a('array')
+		          		expect(cart.status).to.be.a('string') //"" or "checked-out"
 
-          		expect(cart.products).to.have.length.of(1)
-          		expect(cart.count).to.have.length.of(1)
-          		expect(cart.dateAdded).to.have.length.of(1)
-          		expect(cart.status).to.equal('')
-          		done()
-			})
-			.catch(err => {
-				console.log(err)
+		          		expect(cart.products).to.have.length.of(1)
+		          		expect(cart.count).to.have.length.of(1)
+		          		expect(cart.dateAdded).to.have.length.of(1)
+		          		expect(cart.status).to.equal('')
+		          		done()
+					})
+					.catch(err => {
+						console.log(err)
+					})
+				})
 			})
 		})
+		
 	})
 
 	describe('PATCH /cart/del', () => {

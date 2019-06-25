@@ -6,40 +6,40 @@ const Product = require('../models/product.model');
 
 clearDb.clearUser = function() {
   if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'testWin' ) {
-    User
-      .deleteMany({})
-      .then(function() {
-        console.log('Users collection cleared!');
-      })
-      .catch(function(err) {
-        console.log(err);
-      });
+    return User
+      .deleteMany()
+      // .then(result => {
+      //   console.log('Users collection cleared!', result.deletedCount);
+      // })
+      // .catch(function(err) {
+      //   console.log(err);
+      // });
   }
 }
 
 clearDb.clearCart = function() {
   if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'testWin' ) {
-    Cart
-      .deleteMany({})
-      .then(function() {
-        console.log('Cart collection cleared!');
-      })
-      .catch(function(err) {
-        console.log(err);
-      });
+    return Cart
+      .deleteMany()
+      // .then(result => {
+      //   console.log('Cart collection cleared!', result.deletedCount);
+      // })
+      // .catch(function(err) {
+      //   console.log(err);
+      // });
   }
 }
 
 clearDb.clearProduct = function() {
   if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'testWin' ) {
-    Product
-      .deleteMany({})
-      .then(function() {
-        console.log('Products collection cleared!');
-      })
-      .catch(function(err) {
-        console.log(err);
-      });
+    return Product
+      .deleteMany()
+      // .then(result => {
+      //   console.log('Products collection cleared!', result.deletedCount);
+      // })
+      // .catch(function(err) {
+      //   console.log(err);
+      // });
   }
 }
 

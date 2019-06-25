@@ -20,7 +20,7 @@ describe('Users CRUD', () => {
 			.then( res => {
 				//return list of users
 				res.should.have.status(200);
-				(res.body).should.be.a('array');
+				(res.body).should.be.an('array');
 				done()
 			})
 			.catch( err => {
@@ -49,13 +49,11 @@ describe('Users CRUD', () => {
 				newUser.should.have.property('email')
 				newUser.should.have.property('address')
 				newUser.should.have.property('password')
-				newUser.should.have.property('transaction')
 
           		(newUser.name).should.equal('nama user');
           		(newUser.email).should.equal('a@a.com');
           		(newUser.address).should.equal('alamat user');
           		(newUser.address).should.equal('password user');
-          		(newUser.transaction).should.be.a('array');
 
           		//should also create a new cart with this user ID and status ""
 
@@ -111,13 +109,11 @@ describe('Users CRUD', () => {
 				updatedUser.should.have.property('email')
 				updatedUser.should.have.property('address')
 				updatedUser.should.have.property('password')
-				updatedUser.should.have.property('transaction')
 
           		(updatedUser.name).should.equal('new name');
           		(updatedUser.email).should.equal('a@a.com');
           		(updatedUser.address).should.equal('new address');
           		(updatedUser.address).should.equal('new password');
-          		(updatedUser.transaction).should.be.a('array');
 
 				done()
 			})

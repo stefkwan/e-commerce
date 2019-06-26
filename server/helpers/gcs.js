@@ -1,8 +1,8 @@
 const GoogleCloudBucket = require('@google-cloud/storage');
 const Storage = GoogleCloudBucket.Storage;
 
-const GOOGLE_CLOUD_PROJECT_ID = bash.bashrc.GCS_PROJECT_ID; // Replace with your project ID
-const GOOGLE_CLOUD_KEYFILE = bash.bashrc.GCS_KEYFILE_PATH; // Replace with the path to the downloaded private key
+const GOOGLE_CLOUD_PROJECT_ID = process.env.GCS_PROJECT_ID; // Replace with your project ID
+const GOOGLE_CLOUD_KEYFILE = process.env.GCS_KEYFILE_PATH; // Replace with the path to the downloaded private key
 
 const storage = new Storage({
 	projectId: GOOGLE_CLOUD_PROJECT_ID,

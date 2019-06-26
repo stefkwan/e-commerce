@@ -47,6 +47,17 @@ class ControllerProduct {
     })
     .catch(next)
   }
+
+  static uploadImage(req, res, next){
+    try {
+      if (req.file && req.file.gcsUrl) {
+        return res.send(req.file.gcsUrl);
+      }
+      return res.status(500).send('Unable to upload');
+    } catch (err){
+      return res.send(err)
+    }
+  }
 }
 
 module.exports = ControllerProduct

@@ -21,9 +21,24 @@ router.use(isAuthenticated)
 router.get('/', controllerProduct.findAll)
 router.get('/:id', controllerProduct.findOne)
 
-// router.use(isAuthorized)
+router.use(isAuthorized)
 router.post('/', controllerProduct.create)
 router.patch('/:id', controllerProduct.updateOne)
 router.delete('/:id', controllerProduct.deleteOne)
+
+const gcsMiddlewares = require('../middleware/google-cloud-middleware.js')
+const Multer = require('multer');
+
+const multer = Multer({
+	storage: Multer.MemoryStorage,
+		limits: {
+		  fileSize: 10 * 1024 * 1024, // Maximum file size is 10MB
+		},
+	});
+
+router.post('/uploadImage', 
+	multer.single('image'), 
+	gcsMiddlewares.sendUploadToGCS, 
+	controllerProduct.uploadImage)
 
 module.exports = router

@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/stefkwan/e-commerce#readme",
   "dependencies": {
+    "@google-cloud/storage": "^2.5.0",
     "bcrypt": "^3.0.6",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",

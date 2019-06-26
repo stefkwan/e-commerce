@@ -27,7 +27,6 @@ const authentication = (req, res, next) => {
 //auth for product
 const authProduct = (req, res, next) => {
 	let userEmail = req.decode.email
-	console.log(req.decode.email, "emaillllllll")
 
 	//only let admin change, admin declared here
 	let admins = ["admin@ecommerce.com", "admin1@ecommerce.com", "admin2@ecommerce.com"]
@@ -42,12 +41,10 @@ const authProduct = (req, res, next) => {
 
 //authorization for cart
 const authCart = (req, res, next) => {
-	console.log("authCart middleware")
 	let userId = req.decode.id
 
 	Cart.findOne({userId: userId, status: ""})
 		.then(found => {
-			console.log("found cart for current user", found)
 			if (!found) {
 				throw ({status: 404}) //cart not found
 			} else if (found.userId == userId){

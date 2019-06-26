@@ -30,7 +30,7 @@ class ControllerCart {
 			if (foundCart.products.length > 0){
 				foundCart.status = "checked-out"
 				updatedCart = foundCart
-				return Cart.update({_id: foundCart._id}, 
+				return Cart.updateOne({_id: foundCart._id}, 
 						{status: "checked-out"}, 
 						{new: true})
 			} else {
@@ -75,7 +75,7 @@ class ControllerCart {
 				currentCart.dateAdded.push(new Date())
 			}
 
-			return Cart.update({_id: currentCart._id}, currentCart, {new:true})
+			return Cart.updateOne({_id: currentCart._id}, currentCart, {new:true})
 		})
 		.then(updatedCart => {
 			res.status(200).json(currentCart)
@@ -84,7 +84,6 @@ class ControllerCart {
 	}
 
 	static delProduct(req, res, next){
-		console.log("delProduct ControllerCart")
 		let userId = req.decode.id
 		let productId = req.body.productId
 
@@ -92,12 +91,10 @@ class ControllerCart {
 
 		Cart.findOne({userId: userId, status: ""})
 		.then(result => {
-			console.log("currentCart", result)
 			currentCart = result;
 			return Product.findOne({_id: productId})
 		})
 		.then(product => {
-			console.log("product", product)
 			//if not valid product, throw error
 			if (product == null || product == undefined){
 				throw new Error("invalid product")
@@ -114,12 +111,10 @@ class ControllerCart {
 				}
 
 			} // else //nothing to delete
-			console.log("updatedCart", currentCart)
 
-			return Cart.update({_id: currentCart._id}, currentCart, {new:true})
+			return Cart.updateOne({_id: currentCart._id}, currentCart, {new:true})
 		})
 		.then(updatedCart => {
-			console.log("saved updated cart", currentCart)
 			res.status(200).json(currentCart)
 		})
 		.catch(next)

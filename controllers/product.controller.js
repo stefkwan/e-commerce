@@ -13,7 +13,7 @@ class ControllerProduct {
 
   static findOne(req, res, next) {
     let id = req.params.id;
-    Product.find({_id: id})
+    Product.findOne({_id: id})
     .then(result => {
       res.json(result)
     })

@@ -8,7 +8,6 @@ chai.use(chaiHttp);
 var expect = require('chai').expect
 
 after(done => {
-    console.log("inside cart test after hook")
     clearUser()
         .then(userCleared => {
             console.log(userCleared.deletedCount, "users cleared")
@@ -28,19 +27,13 @@ after(done => {
         })
 })
 
-// after( function() {
-// 	clearUser()
-// 	clearCart()
-// 	clearProduct()
-// })
-
-describe.only('User adding/deleting products to Cart', () => {
+describe('User adding/deleting products to Cart', () => {
     //create a new cart when user register or checks out,
     let access_token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0Y2FydEBlY29tbWVyY2UuY29tIn0.TVEsf4-9QIylxQjSVCaFQVyQVfrVCNDFYRUtEEUcYOE`
     //cart has userID of new/logged in user and status ""
     describe('creating a new cart POST /cart', () => {
         describe('create new user first, POST /users', () => {
-            it('should send an object with 201 status', done => {
+            it('should send a user object with 201 status', done => {
                 chai.request(app)
                     .post('/users')
                     .send({
@@ -50,7 +43,6 @@ describe.only('User adding/deleting products to Cart', () => {
                         password: "password user"
                     })
                     .then(res => {
-                        console.log(res.status)
                         expect(res).to.have.status(201)
 
                         let newUser = res.body
@@ -68,7 +60,6 @@ describe.only('User adding/deleting products to Cart', () => {
                         expect(newUser.address).to.equal('alamat user');
                         // expect(newUser.password).to.equal('password user');
 
-                        //should also create a new cart with this user ID and status ""
                         done()
                     })
                     .catch(err => {
@@ -100,6 +91,7 @@ describe.only('User adding/deleting products to Cart', () => {
             })
         })
 
+		//should also create a new cart with userID = this user ID and status = ""
         describe('then create cart for the user POST /cart', () => {
 
             it('should send an cart object with 200 status', done => {
@@ -167,68 +159,9 @@ describe.only('User adding/deleting products to Cart', () => {
         })
     })
 
-	// describe('POST /users', () => {
-	// 	it('should send an object with 201 status', done => {
-	// 		chai.request(app)
-	// 		.post('/users')
-	// 		.send({
-	// 			name: "nama user", 
-	// 			email: "admin@ecommerce.com", 
-	// 			address: "alamat user",
-	// 			password: "password user"
-	// 		})
-	// 		.then( res => {
-	// 			res.should.have.status(201)
-
-	// 			let newUser = res.body
-	// 			newUser.should.be.a('object')
-
-	// 			newUser.should.have.property('name')
-	// 			newUser.should.have.property('email')
-	// 			newUser.should.have.property('address')
-	// 			newUser.should.have.property('password')
-
- //          		(newUser.name).should.equal('nama user');
- //          		(newUser.email).should.equal('admin@ecommerce.com');
- //          		(newUser.address).should.equal('alamat user');
- //          		(newUser.address).should.equal('password user');
-
- //          		//should also create a new cart with this user ID and status ""
-
- //          		done()
-	// 		})
-	// 		.catch(err => {
-	// 			console.log(err)
-	// 		})
-	// 	})
-	// })
-
-	// describe('POST /users/login', () => {
-	// 	it('should send array of users with 200 status', done => {
-	// 		chai.request(app)
-	// 		.post('/users/login')
-	// 		.send({
-	// 			email: "admin@ecommerce.com", 
-	// 			password: "password user"
-	// 		})
-	// 		.then( res => {
-	// 			res.should.have.status(200)
-	// 			(res.body).should.have.property('access_token')
-	// 			(res.body.access_token).should.be.a('string')
-
-	// 			access_token = (res.body.access_token)
-	// 			done()
-	// 		})
-	// 		.catch( err => {
-	// 			console.log(err)
-	// 		})
-	// 	})
-	// })
-
     let productId = "product ID"
     describe('create a product POST /products', () => {
     	//login admin first
-
         it('should send an product object with 201 status', done => {
             chai.request(app)
                 .post('/products')
@@ -293,9 +226,9 @@ describe.only('User adding/deleting products to Cart', () => {
                         expect(cart.dateAdded).to.be.a('array')
                         expect(cart.status).to.be.a('string') //"" or "checked-out"
 
-                        expect(cart.products).to.have.length.of(1)
-                        expect(cart.count).to.have.length.of(1)
-                        expect(cart.dateAdded).to.have.length.of(1)
+                        expect(cart.products).to.have.lengthOf(1)
+                        expect(cart.count).to.have.lengthOf(1)
+                        expect(cart.dateAdded).to.have.lengthOf(1)
                         expect(cart.status).to.equal('')
                         done()
                     })
@@ -332,9 +265,9 @@ describe.only('User adding/deleting products to Cart', () => {
                         expect(cart.dateAdded).to.be.an('array')
                         expect(cart.status).to.be.a('string') //"" or "checked-out"
 
-                        expect(cart.products).to.have.length.of(0)
-                        expect(cart.count).to.have.length.of(0)
-                        expect(cart.dateAdded).to.have.length.of(0)
+                        expect(cart.products).to.have.lengthOf(0)
+                        expect(cart.count).to.have.lengthOf(0)
+                        expect(cart.dateAdded).to.have.lengthOf(0)
                         expect(cart.status).to.equal('')
                         done()
                     })
@@ -370,9 +303,9 @@ describe.only('User adding/deleting products to Cart', () => {
                     expect(cart.dateAdded).to.be.a('array')
                     expect(cart.status).to.be.a('string') //"" or "checked-out"
 
-                    expect(cart.products).to.have.length.of(1)
-                    expect(cart.count).to.have.length.of(1)
-                    expect(cart.dateAdded).to.have.length.of(1)
+                    expect(cart.products).to.have.lengthOf(1)
+                    expect(cart.count).to.have.lengthOf(1)
+                    expect(cart.dateAdded).to.have.lengthOf(1)
                     expect(cart.status).to.equal('')
                     done()
                 })

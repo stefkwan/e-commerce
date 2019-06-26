@@ -13,14 +13,14 @@ const authentication = (req, res, next) => {
 				next()
 			} else {
 				//wrong token
-				next({status: 403}) //forbidden
+				next({status: 403, message:"forbidden access, you are not the owner of this cart"}) //forbidden
 			}
 		} catch (e){
 			next({status: 400})
 		}
 	} else {
 		//no token
-		next({status: 403}) //forbidden
+		next({status: 403, message:"user not logged in"}) //forbidden
 	}
 }
 
@@ -35,7 +35,7 @@ const authProduct = (req, res, next) => {
 		next()
 	} else {
 
-		next({status: 403})
+		next({status: 403, message:"only admins can change products"})
 	}
 }
 

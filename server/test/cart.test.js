@@ -123,6 +123,23 @@ describe('User adding/deleting products to Cart', () => {
                         console.log(err)
                     })
             })
+
+            it('if user is not logged in, should send error message user not logged in', done => {
+                chai.request(app)
+                    .post('/cart')
+                    .then(res => {
+                        expect(res).to.have.property('status')
+                        expect(res).to.have.property('body')
+
+                        expect(res.status).to.equal(403)
+                        expect(res.body).to.equal('user not logged in')
+
+                        done()
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            })
         })
     })
 

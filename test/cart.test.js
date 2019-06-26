@@ -82,7 +82,6 @@ describe('User adding/deleting products to Cart', () => {
                         expect(res.body.access_token).to.be.a('string')
 
                         access_token = (res.body.access_token)
-                        console.log(access_token)
                         done()
                     })
                     .catch(err => {

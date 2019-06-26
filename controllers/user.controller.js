@@ -29,10 +29,9 @@ class ControllerUser {
   }
 
   static create(req, res, next) {
-    console.log("post user")
     const { name, email, address, password } = req.body
     const input = { name, email, address, password }
-    
+
     User.create(input)
     .then(result => {
       //also create an empty cart for the user at client

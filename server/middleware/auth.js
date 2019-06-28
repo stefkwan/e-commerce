@@ -2,7 +2,8 @@ const User = require('../models/').User
 const Cart = require('../models/').Cart
 const Product = require('../models/').Product
 const verifyToken = require('../helpers/jwt.js').verifyToken
-
+let admins = ["admin@ecommerce.com", "admin1@ecommerce.com", "admin2@ecommerce.com"]
+	
 const authentication = (req, res, next) => {
 	let token = req.headers.access_token
 	if(token) {
@@ -27,16 +28,17 @@ const authentication = (req, res, next) => {
 //auth for product
 const authProduct = (req, res, next) => {
 	let userEmail = req.decode.email
-
-	//only let admin change, admin declared here
-	let admins = ["admin@ecommerce.com", "admin1@ecommerce.com", "admin2@ecommerce.com"]
-	if (admins.includes(userEmail)){
-		//logged in user is an admin
-		next()
-	} else {
-
+	//only let admin change, admin declared above
+	User.findOne({email: userEmail})
+	.then( result => {
+		if (result && result.length){
+			if (admins.includes(userEmail)){
+				next()//logged in user is an admin
+			}
+		}
 		next({status: 403, message:"only admins can change products"})
-	}
+	})
+	.catch(next)
 }
 
 //authorization for cart
@@ -80,6 +82,19 @@ const authUser = (req, res, next) => {
 		//no user id parameters
 		next({status: 404}) //page not found
 	}
+}
+
+const authAdmin = (req, res, next) => {
+	User.findOne({email: req.decode.email})
+	.then( result => {
+		if (result && result.length){
+			if (admins.includes(userEmail)){
+				next()//logged in user is an admin
+			}
+		}
+		next({status: 403, message:"only admins can access this page"})
+	})
+	.catch(next)
 }
 
 module.exports = {

@@ -28,6 +28,21 @@ class ControllerUser {
     .catch(next)
   }
 
+  static findHistory(req, res, next){
+    let userIdbyAdmin = req.params.id
+    let userIdbyUser = req.decode.id
+    // find all checked-out carts from said user if id params given (is admin)
+    // or if logged in user wants to check their own history
+    if (userIdbyAdmin || userIdbyUser) {
+      let userId = userIdbyAdmin || userIdbyUser
+      Cart.find({userId: userId, status: "checked-out"})
+      .then ( result => {
+        res.json(result)
+      })
+      .catch(next)
+    }
+  }
+
   static create(req, res, next) {
     const { name, email, address, password } = req.body
     const input = { name, email, address, password }

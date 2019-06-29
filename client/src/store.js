@@ -12,9 +12,13 @@ const store = new Vuex.Store({
     loggedIn: false,
     currentUser: { name: '', email: '' },
     access_token: '',
-    products: []
+    products: [],
+    addProduct: false
   },
   mutations: {
+    toggleAddProduct(state) {
+      state.addProduct = state.addProduct ? false : true
+    },
     INITSTORE(state) {
       if (localStorage.getItem('store')) {
         this.replaceState(

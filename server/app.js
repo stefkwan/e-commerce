@@ -6,15 +6,15 @@ if(pEnv === "test" ||
   require('dotenv').config()
 }
 
-console.log("at app.js")
-
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 
 const routes = require('./routes')
-
 const port = 3000;
+
+var cors = require('cors')
+app.use(cors())
 
 mongoose.connect('mongodb://localhost:27017/ecommerce-' + process.env.NODE_ENV,  
 	{useNewUrlParser: true});

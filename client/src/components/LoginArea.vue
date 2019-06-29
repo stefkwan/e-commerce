@@ -1,5 +1,20 @@
 <template>
   <div id="loginArea" class="d-inline-flex flex-column">
+    <b-alert
+      :show="dismissCountDown"
+      dismissible
+      variant="danger"
+      @dismissed="dismissCountDown=0"
+      @dismiss-count-down="countDownChanged"
+    >
+      <p>{{errorMsg}}. Dimissing in {{dismissCountDown}} seconds...</p>
+      <b-progress
+        variant="danger"
+        :max="dismissSecs"
+        :value="dismissCountDown"
+        height="4px"
+      ></b-progress>
+    </b-alert>
     <b-form @submit="onSubmit" @reset="onReset">
       <b-form-group
         id="group-email"
@@ -54,10 +69,20 @@ export default {
         password: '',
         checked: []
       },
+      dismissSecs: 10,
+      dismissCountDown: 0,
+      errorMsg: ''
     }
   },
   created() {},
   methods: {
+    countDownChanged(dismissCountDown) {
+      this.dismissCountDown = dismissCountDown
+    },
+    showAlert(msg) {
+      this.dismissCountDown = this.dismissSecs
+      this.errorMsg = msg
+    },
     onSubmit(event) {
       event.preventDefault()
       let {state} = this.$store
@@ -65,10 +90,11 @@ export default {
       //login
       axios.post(baseURL+'/users/login', this.form)
         .then( result => {
-          console.log(result)
+          console.log('login result:',result)
         })
         .catch( err => {
           console.log('error at user login:',err)
+          this.showAlert(err)
         })
     },
     onReset(event) {

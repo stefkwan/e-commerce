@@ -15,7 +15,7 @@
         height="4px"
       ></b-progress>
     </b-alert>
-    <b-form @submit="onSubmit" @reset="onReset">
+    <b-form @submit.prevent="onSubmit" @reset="onReset">
       <b-form-group
         id="group-email"
         label="Email address:"
@@ -87,8 +87,7 @@ export default {
       this.dismissCountDown = this.dismissSecs
       this.errorMsg = msg
     },
-    onSubmit(event) {
-      event.preventDefault()
+    onSubmit() {
       let {state, commit} = this.$store
       let baseURL = state.baseURL
       //login

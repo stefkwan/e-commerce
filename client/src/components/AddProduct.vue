@@ -36,12 +36,21 @@
       label="Image URL:"
       label-for="image"
     >
+    <b-form-file
+      v-model="form.image"
+      :state="Boolean(form.image)"
+      placeholder="Choose a file..."
+      drop-placeholder="Drop file here..."
+      required
+    ></b-form-file>
+    <div class="mt-3">Selected form.image: {{ form.image ? form.image.name : '' }}</div>
+    <!-- 
       <b-form-input
         id="image"
         v-model="form.image"
         type="text"
         required
-      ></b-form-input>
+      ></b-form-input> -->
     </b-form-group>
 
     <b-form-group
@@ -88,7 +97,7 @@ export default {
         price: 0,
         stock: 0
       },
-      dismissSecs: 10,
+      dismissSecs: 120,
       dismissCountDown: 0,
       errorMsg: ''
     }
@@ -103,9 +112,62 @@ export default {
       this.errorMsg = msg
     },
     onSubmit () {
-      console.log("add product component onSubmit")
-      this.$store.dispatch('addProduct', this.form)
-      this.onReset()
+      console.log("add product component onSubmit ---")
+      // process form.image from file to url
+
+      console.log("sebelum image")
+      const image = this.form.image
+
+      console.log("sebelum dataToUpload")
+      let dataToUpload = new FormData();
+      dataToUpload.append('name', 'my-picture');
+      dataToUpload.append('image', image);
+
+      console.log({baseURL: this.$store.state.baseURL})
+      let baseURL = this.$store.state.baseURL
+      let access_token = this.$store.state.access_token
+
+      console.log(access_token)
+
+      // axios.post(baseURL+'/products/uploadImage', this.form)
+      //   .then( ({data}) => {
+      //     console.log('login result:', data)
+      //     //get user detail
+      //     commit('SAVEUSERLOGIN', 
+      //       { name: data.name, 
+      //         email: this.form.email,
+      //         address: data.address,
+      //         access_token: data.access_token
+      //       })
+      //     this.goToHome()
+      //   })
+      //   .catch( ({response}) => {
+      //     console.log('error at user login:', response)
+      //     this.showAlert(response.data)
+      //   })
+
+      axios({
+        method: "POST",
+        url: baseURL+"/products/uploadImage",
+        data: dataToUpload,
+        headers:{
+          "access_token": access_token,
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      })
+      .then(({data}) => {
+        console.log("uploaded an image")
+        console.log(data)
+        console.log("-------------------was that the link?------")
+        this.form.image = data
+        localStorage.setItem("imageToUpload", data)
+        this.$store.dispatch('addProduct', this.form)
+        this.onReset()
+      })
+      .catch(({response}) => {
+        console.log("created error:",response)
+        this.showAlert(response)
+      })
     },
     onReset(){
       this.form = {

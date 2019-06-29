@@ -18,8 +18,6 @@ const verifyToken = (token) => {
 	 algorithm:  "HS256"
 	};
 
-	console.log({token})
-
     return jwt.verify(token, secret, verifyOptions)
 }
 

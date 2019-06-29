@@ -6,11 +6,9 @@ let admins = ["admin@ecommerce.com", "admin1@ecommerce.com", "admin2@ecommerce.c
 	
 const authentication = (req, res, next) => {
 	let token = req.headers.access_token
-	console.log({token})
 	if(token) {
 		try{
 			let decode = verifyToken(token).input
-			console.log({decode})
 			if(decode){
 				req.decode = decode
 				next()
@@ -30,12 +28,10 @@ const authentication = (req, res, next) => {
 //auth for product
 const authProduct = (req, res, next) => {
 	let userEmail = req.decode.email
-	console.log(userEmail)
 	//only let admin change, admin declared above
 	User.findOne({email: userEmail})
 	.then( result => {
 		if (result){
-			console.log(admins.includes(userEmail))
 			if (admins.includes(userEmail)){
 				next()//logged in user is an admin
 			}

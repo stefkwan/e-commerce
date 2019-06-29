@@ -11,7 +11,7 @@ const store = new Vuex.Store({
     baseURL: 'http://localhost:3000',
     loggedIn: false,
     currentUser: { name: '', email: '' },
-    currentCart: '',
+    currentCart: null,
     access_token: '',
     products: [],
     addProduct: false
@@ -46,10 +46,10 @@ const store = new Vuex.Store({
       state.access_token = payload.access_token
     },
     UPDATEPRODUCTS(state, payload){
-      this.products = payload
+      state.products = payload
     },
     UPDATECART(state, payload){
-      this.currentCart = payload
+      state.currentCart = payload
       console.log({cart: payload})
     }
   },
@@ -63,7 +63,6 @@ const store = new Vuex.Store({
           {access_token: state.access_token}
         })
       .then(({data}) => {
-        console.log(data)
         dispatch('getProducts')
       })
       .catch(({response}) => {
@@ -73,23 +72,32 @@ const store = new Vuex.Store({
     addToCart(context, payload) {
       let { state, commit, dispatch } = context
       //add to cart, check user's cart
-      dispatch(getCart)
-      axios.patch(state.baseURL+'/cart/add', 
-        {productId: payload}, 
-        {headers: 
-          {access_token: state.access_token}
-        })
-        .then( ({data}) => {
-          commit('UPDATECART', data)
-        })
-        .catch( ({response}) => {
-          console.log('error at add cart:', response)
-        })
+      if (!state.currentCart) {
+        dispatch('getCart')
+        console.log('creating cart for user')
+      } else {
+        axios.patch(state.baseURL+'/cart/add', 
+          {productId: payload}, 
+          {headers: 
+            {access_token: state.access_token}
+          })
+          .then( ({data}) => {
+            commit('UPDATECART', data)
+          })
+          .catch( ({response}) => {
+            console.log('error at add cart:', response)
+          })
+      }
     },
     getProducts(context){
       let {state, commit, dispatch} = context
-      //router.get('/', controllerProduct.findAll)
-      axios.get(state.baseURL+'/products', {headers: {access_token: state.access_token}})
+      console.log('getProducts')
+      axios.get(state.baseURL+'/products', 
+        {
+          headers: {
+            access_token: state.access_token
+          }
+        })
       .then(({data}) => {
         commit('UPDATEPRODUCTS', data)
       })
@@ -126,6 +134,7 @@ const store = new Vuex.Store({
           dispatch('createCart')
           console.log('creating new cart for user')
         } else {
+          commit('UPDATECART', data)
           console.log('retrieved cart for user: ', data)
         }
       })

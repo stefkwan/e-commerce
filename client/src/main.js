@@ -15,5 +15,8 @@ Vue.use(BootstrapVue)
 new Vue({
   router,
   store,
+  beforeCreate() {
+    this.$store.commit('INITSTORE');
+  },
   render: h => h(App)
 }).$mount('#app')

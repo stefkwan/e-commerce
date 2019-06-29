@@ -5,13 +5,28 @@ import axios from 'axios'
 Vue.use(Vuex)
 
 // /users /cart /products
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state: {
     baseURL: 'http://localhost:3000',
-  	loggedIn: false
+  	loggedIn: false,
+    currentUserName: '',
+    access_token: ''
   },
   mutations: {
+    INITSTORE(state){
+      if(localStorage.getItem('store')){
+        this.replaceState(
+          Object.assign(state, JSON.parse(localStorage.getItem('store')))
+        )
+      }
+    },
+    SAVEUSERLOGIN (state, payload) {
+      state.loggedIn = true
+      state.currentUserName = payload.name
+      state.access_token = payload.access_token
+    }
   },
+  getters: {},
   actions: {
   	addToCart (context, payload){
   		let {state, commit, dispatch} = context
@@ -19,3 +34,9 @@ export default new Vuex.Store({
   	}
   }
 })
+
+store.subscribe((mutation, state) => {
+  localStorage.setItem('store', JSON.stringify(state))
+})
+
+export default store

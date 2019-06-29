@@ -85,16 +85,17 @@ export default {
     },
     onSubmit(event) {
       event.preventDefault()
-      let {state} = this.$store
+      let {state, commit} = this.$store
       let baseURL = state.baseURL
       //login
       axios.post(baseURL+'/users/login', this.form)
-        .then( result => {
-          console.log('login result:',result)
+        .then( ({data}) => {
+          console.log('login result:',data)
+          commit('SAVEUSERLOGIN', data)
         })
-        .catch( err => {
-          console.log('error at user login:',err)
-          this.showAlert(err)
+        .catch( ({response}) => {
+          console.log('error at user login:', response)
+          this.showAlert(response.data)
         })
     },
     onReset(event) {
@@ -104,7 +105,6 @@ export default {
         password: '',
         checked: []
       }
-
     },
     register() {
       this.$router.push('/user/register')

@@ -50,7 +50,6 @@ export default {
   },
   methods: {
     addToCart (itemId) {
-      console.log({itemId})
       // add item id to cart of logged in user
       let {state, commit, dispatch} = this.$store
       // if user not logged in, route to login page

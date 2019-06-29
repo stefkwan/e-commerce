@@ -1,6 +1,6 @@
 <template>
   <div class="product">
-    <b-card :title="item.name" :img-src="item.image" img-alt="Image" img-top style="max-width: 20rem;" class="mb-2">
+    <b-card :title="item.name" :img-src="item.image" img-alt="Image" img-top style="width: 10rem;" class="mb-2 overflow-hidden">
       <b-card-text>
       Price: {{idrPrice}}
       </b-card-text>

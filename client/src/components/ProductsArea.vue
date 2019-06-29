@@ -2,9 +2,9 @@
   <div class="products-area">
     <a class = 'btn btn-primary btn-block' v-if="$store.state.isAdmin && $store.state.addProduct == false" @click.prevent="addProductForm" href="#">Add Product</a>
     <AddProduct v-if="$store.state.isAdmin && $store.state.addProduct" />
-    <div class="d-flex">
+    <b-card-group deck>
       <Product class="product" v-for="(item, index) in $store.state.products" :key="index" :item="item" />
-    </div>
+    </b-card-group>
   </div>
 </template>
 <script>

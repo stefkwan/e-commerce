@@ -1,8 +1,6 @@
 let pEnv = process.env.NODE_ENV;
 if(pEnv === "test" || 
-	pEnv === "testWin" ||
-	pEnv === "dev" ||
-	pEnv === "devWin"){
+	pEnv === "development"){
   require('dotenv').config()
 }
 

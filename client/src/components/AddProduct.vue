@@ -105,6 +105,7 @@ export default {
     onSubmit () {
       console.log("add product component onSubmit")
       this.$store.dispatch('addProduct', this.form)
+      this.onReset()
     },
     onReset(){
       this.form = {

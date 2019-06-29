@@ -7,7 +7,9 @@
       <b-card-text>
       Stock: {{stockNum}}
       </b-card-text>
-      <b-button @click="addToCart(item.id)" href="#" variant="primary">Add to Cart</b-button>
+      <b-button class="mb-2" @click="addToCart(item.id)" href="#" variant="primary">Add to Cart</b-button>
+      <b-button class="mb-2" v-if="$store.state.isAdmin" @click="deleteProduct(item.id)" href="#" variant="secondary">Edit</b-button>
+      <b-button v-if="$store.state.isAdmin" @click="deleteProduct(item.id)" href="#" variant="danger">Delete</b-button>
     </b-card>
   </div>
 </template>

@@ -2,7 +2,9 @@
   <div class="products-area">
     <a class = 'btn btn-primary btn-block' v-if="$store.state.isAdmin && $store.state.addProduct == false" @click.prevent="addProductForm" href="#">Add Product</a>
     <AddProduct v-if="$store.state.isAdmin && $store.state.addProduct" />
-    <Product v-for="(item, index) in $store.state.products" :key="index" :item="item" />
+    <div class="d-flex">
+      <Product class="product" v-for="(item, index) in $store.state.products" :key="index" :item="item" />
+    </div>
   </div>
 </template>
 <script>

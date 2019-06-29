@@ -2,10 +2,12 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import User from './views/User.vue'
-
+import store from './store'
 Vue.use(Router)
 
-export default new Router({
+let {state} = store
+
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -19,9 +21,8 @@ export default new Router({
       name: 'user',
       component: User,
       children: [
-        { path: 'login', component: () => import('@/components/LoginArea.vue')},
-        { path: 'register', component: () => import('@/components/Register.vue')}
-        // ...other sub routes
+        { name: 'login', path: 'login', component: () => import('@/components/LoginArea.vue')},
+        { name: 'register', path: 'register', component: () => import('@/components/Register.vue')}
       ]
     },
     {
@@ -36,3 +37,14 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach ((to, from, next) => {
+  console.log(to.path)
+  if (!state.loggedIn && to.path == '/user'){
+    next({ name: 'login' })
+  } else {
+    next()
+  }
+})
+
+export default router

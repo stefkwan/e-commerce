@@ -11,6 +11,7 @@ const store = new Vuex.Store({
     baseURL: 'http://localhost:3000',
     loggedIn: false,
     currentUser: { name: '', email: '' },
+    currentCart: '',
     access_token: '',
     products: [],
     addProduct: false
@@ -43,14 +44,19 @@ const store = new Vuex.Store({
         address: payload.address 
       }
       state.access_token = payload.access_token
+    },
+    UPDATEPRODUCTS(state, payload){
+      this.products = payload
+    },
+    UPDATECART(state, payload){
+      this.currentCart = payload
+      console.log({cart: payload})
     }
   },
   getters: {},
   actions: {
     addProduct(context, payload){
       let {state, dispatch} = context
-      console.log("store att product, "+state.baseURL+ '/products')
-      // router.post('/', controllerProduct.create)
       axios.post(state.baseURL+'/products',
         payload, 
         {headers: 
@@ -67,13 +73,14 @@ const store = new Vuex.Store({
     addToCart(context, payload) {
       let { state, commit, dispatch } = context
       //add to cart, check user's cart
+      dispatch(getCart)
       axios.patch(state.baseURL+'/cart/add', 
         {productId: payload}, 
         {headers: 
           {access_token: state.access_token}
         })
         .then( ({data}) => {
-          console.log('add cart result:', data)
+          commit('UPDATECART', data)
         })
         .catch( ({response}) => {
           console.log('error at add cart:', response)
@@ -84,11 +91,48 @@ const store = new Vuex.Store({
       //router.get('/', controllerProduct.findAll)
       axios.get(state.baseURL+'/products', {headers: {access_token: state.access_token}})
       .then(({data}) => {
-        state.products = data
+        commit('UPDATEPRODUCTS', data)
       })
       .catch( ({response}) => {
         console.log('error loading products: ', response)
       })
+    },
+    createCart(context){
+      let {state, commit, dispatch} = context
+      axios.post(state.baseURL+'/cart', 
+      {
+        headers: {
+          access_token: state.access_token
+        }
+      })
+      .then(({data}) => {
+        console.log('created cart for user')
+        commit('UPDATECART', data)
+      })
+      .catch( ({response}) => {
+        console.log('error creating cart for user: ', response)
+      })
+    },
+    getCart(context){
+      let {state, commit, dispatch} = context
+      axios.get(state.baseURL+'/cart', 
+      {
+        headers: {
+          access_token: state.access_token
+        }
+      })
+      .then(({data}) => {
+        if(!data) { //if user has no default cart (status ""), create one
+          dispatch('createCart')
+          console.log('creating new cart for user')
+        } else {
+          console.log('retrieved cart for user: ', data)
+        }
+      })
+      .catch( ({response}) => {
+        console.log('error retrieving cart for user: ', response)
+      })
+
     }
   }
 })

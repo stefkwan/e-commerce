@@ -14,7 +14,8 @@ const store = new Vuex.Store({
     currentCart: null,
     access_token: '',
     products: [],
-    addProduct: false
+    addProduct: false,
+    isAdmin: false
   },
   mutations: {
     toggleAddProduct (state) {
@@ -69,6 +70,25 @@ const store = new Vuex.Store({
           console.log(response)
         })
     },
+    takeFromCart(context, payload){
+      let {state, commit, dispatch} = context
+      if(!state.currentCart){
+        dispatch('getCart')
+        console.log('getting cart for user')
+      } else {
+        axios.patch(state.baseURL + '/cart/del',
+          { productId: payload },
+          { headers:
+            { access_token: state.access_token }
+          })
+          .then(({ data }) => {
+            dispatch('getProducts')
+          })
+          .catch(({ response }) => {
+            console.log('error at dec 1 item from cart:', response)
+          })
+      }
+    },
     addToCart (context, payload) {
       let { state, commit, dispatch } = context
       // add to cart, check user's cart
@@ -82,10 +102,10 @@ const store = new Vuex.Store({
             { access_token: state.access_token }
           })
           .then(({ data }) => {
-            commit('UPDATECART', data)
+            dispatch('getProducts')
           })
           .catch(({ response }) => {
-            console.log('error at add cart:', response)
+            console.log('error at inc 1 item to cart:', response)
           })
       }
     },
@@ -99,6 +119,7 @@ const store = new Vuex.Store({
           }
         })
         .then(({ data }) => {
+          console.log({data})
           commit('UPDATEPRODUCTS', data)
         })
         .catch(({ response }) => {

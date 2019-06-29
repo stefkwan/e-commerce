@@ -81,3 +81,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.cart {
+  padding: 1em;
+}
+</style>

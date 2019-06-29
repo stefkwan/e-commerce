@@ -17,6 +17,9 @@
 export default {
   name: 'CartItem',
   props: ['shopItem', 'quantity', 'dateAdded'],
+  created () {
+    this.$store.dispatch('getProducts')
+  },
   computed: {
   	totalPrice(){
   		return this.idrPrice(this.shopItem.price * this.quantity)

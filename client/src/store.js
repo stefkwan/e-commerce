@@ -82,7 +82,8 @@ const store = new Vuex.Store({
             { access_token: state.access_token }
           })
           .then(({ data }) => {
-            dispatch('getProducts')
+            console.log({takeFromCart: data})
+            dispatch('getCart')
           })
           .catch(({ response }) => {
             console.log('error at dec 1 item from cart:', response)
@@ -102,7 +103,8 @@ const store = new Vuex.Store({
             { access_token: state.access_token }
           })
           .then(({ data }) => {
-            dispatch('getProducts')
+            console.log({addToCart: data})
+            dispatch('getCart')
           })
           .catch(({ response }) => {
             console.log('error at inc 1 item to cart:', response)
@@ -119,7 +121,7 @@ const store = new Vuex.Store({
           }
         })
         .then(({ data }) => {
-          console.log({data})
+          // console.log({getProducts: data})
           commit('UPDATEPRODUCTS', data)
         })
         .catch(({ response }) => {
@@ -136,7 +138,7 @@ const store = new Vuex.Store({
         })
         .then(({ data }) => {
           console.log('created cart for user')
-          dispatch('createCart') //get populated cart
+          dispatch('getCart') //get populated cart
         })
         .catch(({ response }) => {
           console.log('error creating cart for user: ', response)
@@ -155,8 +157,8 @@ const store = new Vuex.Store({
             dispatch('createCart')
             console.log('creating new cart for user')
           } else {
-            commit('UPDATECART', data)
             console.log('retrieved cart for user: ', data)
+            commit('UPDATECART', data)
           }
         })
         .catch(({ response }) => {

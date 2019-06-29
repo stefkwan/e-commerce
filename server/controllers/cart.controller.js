@@ -81,7 +81,7 @@ class ControllerCart {
 
 			return Cart.updateOne({_id: currentCart._id}, currentCart, {new:true})
 		})
-		.then(updatedCart => {
+		.then( () => {
 			res.status(200).json(currentCart)
 		})
 		.catch(next)
@@ -118,7 +118,7 @@ class ControllerCart {
 
 			return Cart.updateOne({_id: currentCart._id}, currentCart, {new:true})
 		})
-		.then(updatedCart => {
+		.then( () => {
 			res.status(200).json(currentCart)
 		})
 		.catch(next)

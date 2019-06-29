@@ -10,11 +10,13 @@ const userSchema = new Schema({
 	},
 	price: {
 		type: Number,
-		default: 0
+		default: 0,
+		min: [0, 'It is already free. It cannot be a negative price.']
 	},
 	stock: {
 		type: Number,
-		default: 0
+		default: 0,
+		min: [0, 'Min. stock is out of stock (for pre-sale purposes) to register new product']
 	}
 });
 

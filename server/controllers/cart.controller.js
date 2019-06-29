@@ -7,10 +7,14 @@ class ControllerCart {
 	static findOne(req, res, next){
 		let userId = req.decode.id
 		Cart.findOne({userId: userId, status: ""})
-		.then( result => {
-			res.json(result)
+		.populate('products')
+		.exec(function (err, cart) {
+			if(err){
+				next(err)
+			} else {
+			  res.json(cart)
+			}
 		})
-		.catch(next)
 	}
 
 	static create(req, res, next){
@@ -65,7 +69,7 @@ class ControllerCart {
 			if (currentCart.products.includes(productId)){
 				let itemIndex = currentCart.products.indexOf(productId)
 				currentCart.count[itemIndex]++
-				if(product.stock > currentCart.count[itemIndex]){
+				if(product.stock < currentCart.count[itemIndex]){
 					//product stock is not enough, cancel adding more stock
 					currentCart.count[itemIndex]--
 				}

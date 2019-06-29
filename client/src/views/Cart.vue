@@ -3,7 +3,7 @@
     <h1>Your shopping list</h1>
     <b-list-group>
       <b-list-group-item v-for="(shopItem, index) in products" :key="index" class="d-flex justify-content-between align-items-center">
-        {{shopItem}}
+        <b-img thumbnail :src="shopItem.image" alt="shirtify" height="32" width="32"></b-img>{{shopItem.image}}{{shopItem.name}}
         <b-badge variant="primary" pill>{{count[index]}}</b-badge>
       </b-list-group-item>
     </b-list-group>

@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 const cartSchema = new Schema({
 	products: [{ 
 		type: Schema.Types.ObjectId, 
-		ref: 'Products'
+		ref: 'Product'
 	}],
 	count: [{
 		type: Number

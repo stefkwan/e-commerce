@@ -5,7 +5,7 @@ import User from './views/User.vue'
 import store from './store'
 Vue.use(Router)
 
-let {state} = store
+let { state } = store
 
 const router = new Router({
   mode: 'history',
@@ -21,9 +21,9 @@ const router = new Router({
       name: 'user',
       component: User,
       children: [
-        { name: 'login', path: 'login', component: () => import('@/components/LoginArea.vue')},
-        { name: 'register', path: 'register', component: () => import('@/components/Register.vue')},
-        { name: 'edit', path: 'edit', component: () => import('@/components/UserEditArea.vue')}
+        { name: 'login', path: 'login', component: () => import('@/components/LoginArea.vue') },
+        { name: 'register', path: 'register', component: () => import('@/components/Register.vue') },
+        { name: 'edit', path: 'edit', component: () => import('@/components/UserEditArea.vue') }
       ]
     },
     {
@@ -39,8 +39,8 @@ const router = new Router({
   ]
 })
 
-router.beforeEach ((to, from, next) => {
-  if (!state.loggedIn && to.path === '/user'){
+router.beforeEach((to, from, next) => {
+  if (!state.loggedIn && to.path === '/user') {
     next({ name: 'login' })
   } else {
     next()

@@ -115,7 +115,7 @@ const store = new Vuex.Store({
         })
         .then(({ data }) => {
           console.log('created cart for user')
-          commit('UPDATECART', data)
+          dispatch('createCart') //get populated cart
         })
         .catch(({ response }) => {
           console.log('error creating cart for user: ', response)

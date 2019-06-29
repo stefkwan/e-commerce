@@ -24,28 +24,12 @@ export default {
   created () {},
   computed: {
     idrPrice() {
-      let price = this.item.price
-      let result = []
-      while(price > 0){
-        let rem = price % 1000
-        if (rem === 0) rem = '000'
-        result.unshift(rem)
-        price -= rem
-        price /= 1000
-      }
-      return result.length === 0 ? 'Free' : 'Rp. ' + result.join('.')
+      if (this.item.price == 0) return 'Free'
+      return 'Rp. '+ this.formatNumber(this.item.price)
     },
     stockNum() {
-      let stock = this.item.stock
-      let result = []
-      while(stock > 0){
-        let rem = stock % 1000
-        if (rem === 0) rem = '000'
-        result.unshift(rem)
-        stock -= rem
-        stock /= 1000
-      }
-      return result.join('.')
+      if (this.item.stock == 0) return 'Out of Stock'
+      return this.formatNumber(this.item.stock)
     }
   },
   methods: {

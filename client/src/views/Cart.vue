@@ -10,10 +10,10 @@
 	  <b-col>Total</b-col>
 	  </b-list-group-item>
 
-	  <CartItem v-for="(shopItem, index) in products" :key="index" 
+	  <CartItem v-for="(shopItem, index) in $store.state.currentCart.products" :key="index" 
 	      :shopItem="shopItem"
-	      :quantity="count[index]"
-	      :dateAdded="dateAdded[index]"/>
+	      :quantity="$store.state.currentCart.count[index]"
+	      :dateAdded="$store.state.currentCart.dateAdded[index]"/>
 
 	  <b-list-group-item class="d-flex justify-content-around align-items-center cartItem">
 	  <b-img v-bind="mainProps" alt="Transparent image"></b-img>
@@ -35,48 +35,34 @@ export default {
   },
   data () {
   	return {
-		products: this.$store.state.currentCart.products,
-		count: this.$store.state.currentCart.count,
-		dateAdded: this.$store.state.currentCart.dateAdded,
 		mainProps: { blank: true, width: 52, height: 52, class: 'm1' }
   	}
   },
   computed: {
-  	totalPrice(){
-  		let subTotal = 0
-  		this.products.forEach((item, index) => {
-  			subTotal += item.price * this.count[index]
-  		})
-  		return this.idrPrice(subTotal)
-  	},
-    totalQty() {
-      const add = (a, b) => a + b
-      let subTotal = this.count.reduce(add)
-      if (subTotal == 0) return 0
-
-      let result = []
-      while(subTotal > 0){
-        let rem = subTotal % 1000
-        if (rem === 0) rem = '000'
-        result.unshift(rem)
-        subTotal -= rem
-        subTotal /= 1000
+    totalPrice () {
+      let currentCart = this.$store.state.currentCart
+      if (currentCart){
+        let subTotal = 0
+        let {products, count} = currentCart
+        products.forEach((item, index) => {
+          subTotal += item.price * count[index]
+        })
+        if (subTotal === 0) return 'Free'
+        return 'Rp. '+ this.formatNumber(subTotal)
       }
-      return result.join('.')
-    }
-  },
-  methods: {
-    idrPrice(price) {
-      if (price === 0) return 'Free'
-      let result = []
-      while(price > 0){
-        let rem = price % 1000
-        if (rem === 0) rem = '000'
-        result.unshift(rem)
-        price -= rem
-        price /= 1000
+      return null
+    },
+    totalQty () {
+      let currentCart = this.$store.state.currentCart
+      if (!currentCart) return null
+      if (currentCart.count && currentCart.count.length > 0){
+        let {count} = currentCart
+        const add = (a, b) => a + b
+        let subTotal = count.reduce(add)
+        if (subTotal === 0) return 'Out of Stock'
+        return this.formatNumber(subTotal)
       }
-      return 'Rp. ' + result.join('.')
+      return null
     }
   }
 }

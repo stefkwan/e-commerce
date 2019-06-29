@@ -15,7 +15,9 @@ const store = new Vuex.Store({
     access_token: '',
     products: [],
     addProduct: false,
-    isAdmin: false
+    isAdmin: false,
+    totalPrice: 0,
+    totalQty: 0
   },
   mutations: {
     toggleAddProduct (state) {
@@ -54,7 +56,6 @@ const store = new Vuex.Store({
       console.log({ cart: payload })
     }
   },
-  getters: {},
   actions: {
     addProduct (context, payload) {
       let { state, dispatch } = context

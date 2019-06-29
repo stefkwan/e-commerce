@@ -11,6 +11,13 @@ import store from './store'
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 // Vue.use(db)
+Vue.mixin({
+  methods: {
+    formatNumber(num) {
+	  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+	}
+  }
+})
 
 new Vue({
   router,

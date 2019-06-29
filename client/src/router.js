@@ -39,8 +39,7 @@ const router = new Router({
 })
 
 router.beforeEach ((to, from, next) => {
-  console.log(to.path)
-  if (!state.loggedIn && to.path == '/user'){
+  if (!state.loggedIn && to.path === '/user'){
     next({ name: 'login' })
   } else {
     next()

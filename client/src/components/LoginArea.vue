@@ -44,6 +44,7 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
   name: 'LoginArea',
   data() {
@@ -59,7 +60,16 @@ export default {
   methods: {
     onSubmit(event) {
       event.preventDefault()
-
+      let {state} = this.$store
+      let baseURL = state.baseURL
+      //login
+      axios.post(baseURL+'/users/login', this.form)
+        .then( result => {
+          console.log(result)
+        })
+        .catch( err => {
+          console.log('error at user login:',err)
+        })
     },
     onReset(event) {
       event.preventDefault()

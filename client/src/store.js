@@ -4,11 +4,10 @@ import Vuex from 'vuex'
 import axios from 'axios'
 Vue.use(Vuex)
 
-const baseURL = 'http://localhost:3000/'
 // /users /cart /products
-
 export default new Vuex.Store({
   state: {
+    baseURL: 'http://localhost:3000',
   	loggedIn: false
   },
   mutations: {

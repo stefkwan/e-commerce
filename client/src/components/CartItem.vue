@@ -1,6 +1,6 @@
 <template>
   <b-list-group-item class="d-flex justify-content-between align-items-center cartItem">
-    <b-img thumbnail :src="shopItem.image" alt="thumb" height="32" width="32"></b-img>
+    <b-img rounded :src="shopItem.image" alt="thumb" height="42" width="42"></b-img>
     <b-col>{{shopItem.name}}</b-col>
     <b-col>{{singlePrice}}</b-col>
     <b-button-group class="mx-1">

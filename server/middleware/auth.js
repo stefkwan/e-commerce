@@ -101,5 +101,6 @@ module.exports = {
 	authentication,
 	authUser,
 	authCart,
-	authProduct
+	authProduct,
+	authAdmin
 }

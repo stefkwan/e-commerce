@@ -3,18 +3,18 @@ const ControllerCarts = require('../controllers/cart.controller.js')
 const isAuthenticated = require('../middleware/auth.js').authentication
 const isAuthorized = require('../middleware/auth.js').authCart
 
-router.delete('/', (req, res, next) => {
-	const Cart = require('../models').Cart
+// router.delete('/', (req, res, next) => {
+// 	const Cart = require('../models').Cart
 
-	Cart
-	.deleteMany()
-	.then(result => {
-		res.json('Cart collection cleared! ' + result.deletedCount);
-	})
-	.catch(function(err) {
-		next(err);
-	});
-})
+// 	Cart
+// 	.deleteMany()
+// 	.then(result => {
+// 		res.json('Cart collection cleared! ' + result.deletedCount);
+// 	})
+// 	.catch(function(err) {
+// 		next(err);
+// 	});
+// })
 
 // /cart
 router.use(isAuthenticated)

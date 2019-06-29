@@ -74,7 +74,11 @@ export default {
       errorMsg: ''
     }
   },
-  created() {},
+  created() {
+    if (this.$store.state.loggedIn){
+      this.goToHome()
+    }
+  },
   methods: {
     countDownChanged(dismissCountDown) {
       this.dismissCountDown = dismissCountDown
@@ -90,13 +94,22 @@ export default {
       //login
       axios.post(baseURL+'/users/login', this.form)
         .then( ({data}) => {
-          console.log('login result:',data)
-          commit('SAVEUSERLOGIN', data)
+          console.log('login result:', data)
+          commit('SAVEUSERLOGIN', 
+            { name: data.name, 
+              email: this.form.email,
+              address: data.address,
+              access_token: data.access_token
+            })
+          this.goToHome()
         })
         .catch( ({response}) => {
           console.log('error at user login:', response)
           this.showAlert(response.data)
         })
+    },
+    goToHome(){
+      this.$router.push('/')
     },
     onReset(event) {
       event.preventDefault()

@@ -22,7 +22,8 @@ const router = new Router({
       component: User,
       children: [
         { name: 'login', path: 'login', component: () => import('@/components/LoginArea.vue')},
-        { name: 'register', path: 'register', component: () => import('@/components/Register.vue')}
+        { name: 'register', path: 'register', component: () => import('@/components/Register.vue')},
+        { name: 'edit', path: 'edit', component: () => import('@/components/UserEditArea.vue')}
       ]
     },
     {

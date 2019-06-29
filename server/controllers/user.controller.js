@@ -16,6 +16,8 @@ class ControllerUser {
     User.findOneAndUpdate({email: userEmail}, input, {new: true})
     .then(updated => {
       res.json(updated)
+      // let token = generateToken({id: user._id, email: user.email})
+      //     res.json({access_token: token, name: user.name})
     })
     .catch(next)
   }

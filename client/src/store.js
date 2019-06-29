@@ -8,35 +8,50 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     baseURL: 'http://localhost:3000',
-  	loggedIn: false,
-    currentUserName: '',
+    loggedIn: false,
+    currentUser: { name: '', email: '' },
     access_token: ''
   },
   mutations: {
-    INITSTORE(state){
-      if(localStorage.getItem('store')){
+    INITSTORE(state) {
+      if (localStorage.getItem('store')) {
         this.replaceState(
           Object.assign(state, JSON.parse(localStorage.getItem('store')))
         )
       }
     },
-    SAVEUSERLOGIN (state, payload) {
+    LOGOUT(state) {
+      console.log("logout mutation")
+      state.loggedIn = false
+      state = {
+        baseURL: 'http://localhost:3000',
+        loggedIn: false,
+        currentUser: { name: '', email: '', address: '' },
+        access_token: ''
+      }
+      localStorage.clear()
+    },
+    SAVEUSERLOGIN(state, payload) {
       state.loggedIn = true
-      state.currentUserName = payload.name
+      state.currentUser = { 
+        name: payload.name, 
+        email: payload.email,
+        address: payload.address 
+      }
       state.access_token = payload.access_token
     }
   },
   getters: {},
   actions: {
-  	addToCart (context, payload){
-  		let {state, commit, dispatch} = context
+    addToCart(context, payload) {
+      let { state, commit, dispatch } = context
 
-  	}
+    }
   }
 })
 
 store.subscribe((mutation, state) => {
-  localStorage.setItem('store', JSON.stringify(state))
+  if (state.loggedIn) localStorage.setItem('store', JSON.stringify(state))
 })
 
 export default store

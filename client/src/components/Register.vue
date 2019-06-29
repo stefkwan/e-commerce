@@ -31,6 +31,9 @@
 
       <b-button class="m-1" type="submit" variant="primary">Register</b-button>
       <b-button class="m-1" type="reset" variant="danger">Reset</b-button>
+      <br/>
+      <label>Already have an account? <a href="#" @click.prevent="goToLoginPage">Login</a></label>
+
     </b-form>
   </div>
   </div>
@@ -48,6 +51,9 @@ export default {
   },
   created() {},
   methods: {
+    goToLoginPage(){
+      this.$router.push('/user/login')
+    },
     onSubmit(event) {
       event.preventDefault()
 

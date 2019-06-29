@@ -16,7 +16,7 @@
       height="4px"
     ></b-progress>
   </b-alert>
-  <b-form @submit="onSubmit" @reset="onReset">
+  <b-form @submit.prevent="onSubmit" @reset.prevent="onReset">
     <b-form-group
       id="group-name"
       label="Product Name:"
@@ -103,7 +103,8 @@ export default {
       this.errorMsg = msg
     },
     onSubmit () {
-      this.$store.dispatch('addProduct', form)
+      console.log("add product component onSubmit")
+      this.$store.dispatch('addProduct', this.form)
     },
     onReset(){
       this.form = {

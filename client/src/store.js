@@ -47,6 +47,23 @@ const store = new Vuex.Store({
   },
   getters: {},
   actions: {
+    addProduct(context, payload){
+      let {state, dispatch} = context
+      console.log("store att product, "+state.baseURL+ '/products')
+      // router.post('/', controllerProduct.create)
+      axios.post(state.baseURL+'/products',
+        payload, 
+        {headers: 
+          {access_token: state.access_token}
+        })
+      .then(({data}) => {
+        console.log(data)
+        dispatch('getProducts')
+      })
+      .catch(({response}) => {
+        console.log(response)
+      })
+    },
     addToCart(context, payload) {
       let { state, commit, dispatch } = context
       //add to cart, check user's cart

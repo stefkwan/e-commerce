@@ -28,15 +28,18 @@ const authentication = (req, res, next) => {
 //auth for product
 const authProduct = (req, res, next) => {
 	let userEmail = req.decode.email
+	console.log(userEmail)
 	//only let admin change, admin declared above
 	User.findOne({email: userEmail})
 	.then( result => {
-		if (result && result.length){
+		if (result){
+			console.log(admins.includes(userEmail))
 			if (admins.includes(userEmail)){
 				next()//logged in user is an admin
 			}
+		} else {
+			next({status: 403, message:"only admins can change products"})
 		}
-		next({status: 403, message:"only admins can change products"})
 	})
 	.catch(next)
 }
@@ -85,14 +88,16 @@ const authUser = (req, res, next) => {
 }
 
 const authAdmin = (req, res, next) => {
-	User.findOne({email: req.decode.email})
+	let userEmail = req.decode.email
+	User.findOne({email: userEmail})
 	.then( result => {
-		if (result && result.length){
+		if (result){
 			if (admins.includes(userEmail)){
 				next()//logged in user is an admin
 			}
+		} else {
+			next({status: 403, message:"only admins can access this page"})
 		}
-		next({status: 403, message:"only admins can access this page"})
 	})
 	.catch(next)
 }

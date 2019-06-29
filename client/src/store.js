@@ -107,7 +107,7 @@ const store = new Vuex.Store({
     },
     createCart(context){
       let {state, commit, dispatch} = context
-      axios.post(state.baseURL+'/cart', 
+      axios.post(state.baseURL+'/cart', {},
       {
         headers: {
           access_token: state.access_token

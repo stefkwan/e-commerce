@@ -6,6 +6,7 @@ let admins = ["admin@ecommerce.com", "admin1@ecommerce.com", "admin2@ecommerce.c
 	
 const authentication = (req, res, next) => {
 	let token = req.headers.access_token
+	// console.log({token})
 	if(token) {
 		try{
 			let decode = verifyToken(token).input

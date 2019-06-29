@@ -15,9 +15,7 @@ const store = new Vuex.Store({
     access_token: '',
     products: [],
     addProduct: false,
-    isAdmin: false,
-    totalPrice: 0,
-    totalQty: 0
+    isAdmin: false
   },
   mutations: {
     toggleAddProduct (state) {

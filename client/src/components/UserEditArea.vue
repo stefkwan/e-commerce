@@ -6,7 +6,7 @@
         <p>{{errorMsg}}. Dimissing in {{dismissCountDown}} seconds...</p>
         <b-progress variant="danger" :max="dismissSecs" :value="dismissCountDown" height="4px"></b-progress>
       </b-alert>
-      <b-form @submit="onSubmit" @reset="onReset">
+      <b-form @submit.prevent="onSubmit" @reset.prevent="onReset">
         <b-form-group id="group-name" label="Name:" label-for="name">
           <b-form-input id="name" v-model="form.name" type="text" required></b-form-input>
         </b-form-group>
@@ -51,8 +51,7 @@ export default {
       this.dismissCountDown = this.dismissSecs
       this.errorMsg = msg
     },
-    onSubmit(event) {
-      event.preventDefault()
+    onSubmit() {
       let { state, commit } = this.$store
       let baseURL = state.baseURL
       //login
@@ -65,6 +64,7 @@ export default {
         .then(({ data }) => {
           console.log('edit user result:', data)
           commit('SAVEUSERLOGIN', data)
+          this.onReset()
         })
         .catch(({ response }) => {
           console.log('error at user login:', response)
@@ -74,8 +74,7 @@ export default {
     goToHome() {
       this.$router.push('/')
     },
-    onReset(event) {
-      event.preventDefault()
+    onReset() {
       this.$router.push('/user')
     },
     register() {

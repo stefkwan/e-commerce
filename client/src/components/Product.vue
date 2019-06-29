@@ -8,12 +8,13 @@
       Stock: {{stockNum}}
       </b-card-text>
       <b-button class="mb-2" @click="addToCart(item._id)" href="#" variant="primary">Add to Cart</b-button>
-      <b-button class="mb-2" v-if="$store.state.isAdmin" @click="deleteProduct(item.id)" href="#" variant="secondary">Edit</b-button>
-      <b-button v-if="$store.state.isAdmin" @click="deleteProduct(item.id)" href="#" variant="danger">Delete</b-button>
+      <b-button class="mb-2" v-if="$store.state.isAdmin && $store.state.loggedIn" @click="editProduct(item.id)" href="#" variant="secondary">Edit</b-button>
+      <b-button v-if="$store.state.isAdmin && $store.state.loggedIn" @click="deleteProduct(item.id)" href="#" variant="danger">Delete</b-button>
     </b-card>
   </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
   name: 'Product',
   props: ['item'],
@@ -33,6 +34,24 @@ export default {
     }
   },
   methods: {
+    editProduct(itemId){
+
+    },
+    deleteProduct(itemId){
+      let {state, commit, dispatch} = this.$store
+      axios.delete(state.baseURL + '/products/'+itemId, 
+        { },
+        { headers:
+          { access_token: state.access_token }
+        })
+        .then(({ data }) => {
+          console.log({deleteProduct: data})
+          dispatch('getProducts') //get updated products
+        })
+        .catch(({ response }) => {
+          console.log('error at deleting product:', response)
+        })
+    },
     addToCart (itemId) {
       // add item id to cart of logged in user
       let {state, commit, dispatch} = this.$store

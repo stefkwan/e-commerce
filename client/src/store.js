@@ -76,6 +76,8 @@ const store = new Vuex.Store({
         dispatch('getCart')
         console.log('creating cart for user')
       } else {
+        console.log({productIdFromPayload: payload})
+        
         axios.patch(state.baseURL+'/cart/add', 
           {productId: payload}, 
           {headers: 

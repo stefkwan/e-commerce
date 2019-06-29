@@ -88,12 +88,14 @@ export default {
       this.errorMsg = msg
     },
     onSubmit() {
-      let {state, commit} = this.$store
+      let {state, commit, dispatch} = this.$store
       let baseURL = state.baseURL
       //login
       axios.post(baseURL+'/users/login', this.form)
         .then( ({data}) => {
           console.log('login result:', data)
+          //get user's cart everytime they log in
+          dispatch('getCart')
           //get user detail
           commit('SAVEUSERLOGIN', 
             { name: data.name, 

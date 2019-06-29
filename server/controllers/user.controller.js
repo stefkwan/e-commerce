@@ -15,9 +15,10 @@ class ControllerUser {
 
     User.findOneAndUpdate({email: userEmail}, input, {new: true})
     .then(updated => {
-      res.json(updated)
+      // console.log(updated)
       // let token = generateToken({id: user._id, email: user.email})
-      //     res.json({access_token: token, name: user.name})
+      // res.json({access_token: token, name: user.name})
+      res.json(updated)
     })
     .catch(next)
   }
@@ -67,7 +68,7 @@ class ControllerUser {
         let check = verifyPassword(input.password, user.password)
         if(check) {
           let token = generateToken({id: user._id, email: user.email})
-          res.json({access_token: token, name: user.name})
+          res.json({access_token: token, name: user.name, address: user.address})
         } else {
           throw {status: 400, message: 'Wrong password'}
         }

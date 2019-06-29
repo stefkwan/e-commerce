@@ -95,6 +95,7 @@ export default {
       axios.post(baseURL+'/users/login', this.form)
         .then( ({data}) => {
           console.log('login result:', data)
+          //get user detail
           commit('SAVEUSERLOGIN', 
             { name: data.name, 
               email: this.form.email,

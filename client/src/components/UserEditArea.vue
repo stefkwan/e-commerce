@@ -56,11 +56,15 @@ export default {
       let { state, commit } = this.$store
       let baseURL = state.baseURL
       //login
-      axios.patch(baseURL + '/users', this.form)
+      axios.patch(
+        baseURL + '/users', 
+        this.form,
+        {headers: {
+          access_token: state.access_token
+        }})
         .then(({ data }) => {
           console.log('edit user result:', data)
           commit('SAVEUSERLOGIN', data)
-          this.goToHome()
         })
         .catch(({ response }) => {
           console.log('error at user login:', response)
@@ -72,11 +76,7 @@ export default {
     },
     onReset(event) {
       event.preventDefault()
-      this.form = {
-        email: '',
-        password: '',
-        checked: []
-      }
+      this.$router.push('/user')
     },
     register() {
       this.$router.push('/user/register')

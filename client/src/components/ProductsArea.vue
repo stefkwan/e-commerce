@@ -1,6 +1,6 @@
 <template>
   <div class="products-area">
-    <Product v-for="(item, index) in productList" :key="index" :item="item" />
+    <Product v-for="(item, index) in $store.state.products" :key="index" :item="item" />
   </div>
 </template>
 <script>
@@ -12,17 +12,6 @@ export default {
   },
   data () {
     return {
-      productList: [{
-        name: "shirt1",
-        image: "https://picsum.photos/600/300/?image=101",
-        price: 25000,
-        stock: 3
-      }, {
-        name: "shirt2",
-        image: "https://picsum.photos/600/300/?image=102",
-        price: 32000,
-        stock: 2
-      }]
     }
   },
   created () {},

@@ -17,7 +17,7 @@ const authentication = (req, res, next) => {
 				next({status: 403, message:"forbidden access, you are not the owner of this cart"}) //forbidden
 			}
 		} catch (e){
-			next({status: 400})
+			next({status: 400, message:"error at user token authentication"})
 		}
 	} else {
 		//no token

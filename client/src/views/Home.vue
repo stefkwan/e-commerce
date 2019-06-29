@@ -15,6 +15,9 @@ export default {
   components: {
     LandingPage,
     ProductsArea
+  },
+  created(){
+    this.$store.dispatch('getProducts')
   }
 }
 

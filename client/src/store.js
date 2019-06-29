@@ -4,13 +4,15 @@ import Vuex from 'vuex'
 import axios from 'axios'
 Vue.use(Vuex)
 
+let admins = ["admin@ecommerce.com", "admin1@ecommerce.com", "admin2@ecommerce.com"]
 // /users /cart /products
 const store = new Vuex.Store({
   state: {
     baseURL: 'http://localhost:3000',
     loggedIn: false,
     currentUser: { name: '', email: '' },
-    access_token: ''
+    access_token: '',
+    products: []
   },
   mutations: {
     INITSTORE(state) {
@@ -23,15 +25,13 @@ const store = new Vuex.Store({
     LOGOUT(state) {
       console.log("logout mutation")
       state.loggedIn = false
-      state = {
-        baseURL: 'http://localhost:3000',
-        loggedIn: false,
-        currentUser: { name: '', email: '', address: '' },
-        access_token: ''
-      }
+      state = null
       localStorage.clear()
     },
     SAVEUSERLOGIN(state, payload) {
+      if (admins.includes(payload.email)){
+        state.isAdmin = true
+      }
       state.loggedIn = true
       state.currentUser = { 
         name: payload.name, 
@@ -45,7 +45,29 @@ const store = new Vuex.Store({
   actions: {
     addToCart(context, payload) {
       let { state, commit, dispatch } = context
-
+      //add to cart, check user's cart
+      axios.patch(state.baseURL+'/cart/add', 
+        {productId: payload}, 
+        {headers: 
+          {access_token: state.access_token}
+        })
+        .then( ({data}) => {
+          console.log('add cart result:', data)
+        })
+        .catch( ({response}) => {
+          console.log('error at add cart:', response)
+        })
+    },
+    getProducts(context){
+      let {state, commit, dispatch} = context
+      //router.get('/', controllerProduct.findAll)
+      axios.get(state.baseURL+'/products', {headers: {access_token: state.access_token}})
+      .then(({data}) => {
+        state.products = data
+      })
+      .catch( ({response}) => {
+        console.log('error loading products: ', response)
+      })
     }
   }
 })

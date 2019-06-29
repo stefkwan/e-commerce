@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
+      <router-link to="/" exact>Home</router-link> |
       <router-link to="/user">User</router-link> |
       <router-link to="/cart">Cart</router-link> |
       <router-link to="/about">About</router-link>
@@ -34,8 +34,9 @@ html, body, #app {
   color: #775C9E;
 }
 
-#nav a.router-link-exact-active {
+#nav a.router-link-active {
   color: #062399;
+  text-decoration: underline;
 }
 
 #nav a:hover {

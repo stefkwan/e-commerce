@@ -9,19 +9,14 @@ const baseURL = 'http://localhost:3000/'
 
 export default new Vuex.Store({
   state: {
-  	users: [],
-  	carts: [],
-  	products: []
+  	loggedIn: false
   },
   mutations: {
   },
   actions: {
-  	getUsers (context, payload){
+  	addToCart (context, payload){
   		let {state, commit, dispatch} = context
-  		axios({
-  			method: 'get',
-  			url: baseURL+'/users'
-  		})
+
   	}
   }
 })

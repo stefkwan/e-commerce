@@ -127,13 +127,13 @@ export default {
     },
     onSubmit () {
       if (this.form.image == this.oldform.image){
-        // if form.image is not changed, it is still a url, skip uploading new image file to gcs
+        // if form.image is not changed, it is still a string url, skip uploading new image file to gcs
         this.form.oldImage = this.oldform.image
         this.$store.dispatch('editProduct', this.form)
         this.onReset()
         this.loading = false
       } else {
-        // process form.image from file to url
+        // process form.image from file to url from gcs
         this.loading = true
         const image = this.form.image
 

@@ -92,11 +92,31 @@ const store = new Vuex.Store({
           { access_token: state.access_token }
         })
         .then(({ data }) => {
+          // successfully updated product,
           // delete payload.oldImage from gcs
+          dispatch('deleteImageFromGCS', payload.oldImage)
           dispatch('getProducts')
         })
         .catch(({ response }) => {
-          // delete payload.image from gcs
+          // fail to update product,
+          // delete new image payload.image from gcs
+          dispatch('deleteImageFromGCS', payload.image)
+          console.log(response)
+        })
+    },
+    deleteImageFromGCS(context, payload){
+      let {state} = context
+      axios.post(state.baseURL + '/products/deleteImage',
+        {imageURL: payload},
+        { headers:
+          { access_token: state.access_token }
+        })
+        .then(({ data }) => {
+          // successfully deleted image from gcs
+          console.log({imageDeleted: payload})
+        })
+        .catch(({ response }) => {
+          // fail to delete image from gcs
           console.log(response)
         })
     },

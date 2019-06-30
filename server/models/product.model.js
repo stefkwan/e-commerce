@@ -3,7 +3,10 @@ const Schema = mongoose.Schema
 const hashPassword = require('../helpers/bcrypt.js').hashPassword
 
 const userSchema = new Schema({
-	name: String,
+	name: {
+		type: String,
+		default: "no name"
+	},
 	image: {
 		type: String,
 		default: "no image"

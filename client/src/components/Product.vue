@@ -1,15 +1,15 @@
 <template>
   <div class="product">
-    <b-card :title="item.name" :img-src="item.image" img-alt="Image" img-top style="width: 10rem;" class="mb-2 overflow-hidden">
+    <b-card :title="itemName" :img-src="itemImage" img-alt="Image" img-top style="width: 10rem;" class="mb-2 overflow-hidden">
       <b-card-text>
       Price: {{idrPrice}}
       </b-card-text>
       <b-card-text>
       Stock: {{stockNum}}
       </b-card-text>
-      <b-button class="mb-2" @click="addToCart(item._id)" href="#" variant="primary">Add to Cart</b-button>
-      <b-button class="mb-2" v-if="$store.state.isAdmin && $store.state.loggedIn" @click="editProduct(item.id)" href="#" variant="secondary">Edit</b-button>
-      <b-button v-if="$store.state.isAdmin && $store.state.loggedIn" @click="deleteProduct(item.id)" href="#" variant="danger">Delete</b-button>
+      <b-button class="mb-2" @click="addToCart(itemId)" href="#" variant="primary">Add to Cart</b-button>
+      <b-button class="mb-2" v-if="$store.state.isAdmin && $store.state.loggedIn" @click="editProduct(itemId)" href="#" variant="secondary">Edit</b-button>
+      <b-button v-if="$store.state.isAdmin && $store.state.loggedIn" @click="deleteProduct(itemId)" href="#" variant="danger">Delete</b-button>
     </b-card>
   </div>
 </template>
@@ -24,11 +24,25 @@ export default {
   },
   created () {},
   computed: {
+    itemId(){
+      if(!this.item._id) return ''
+        return this.item._id
+    },
+    itemName(){
+      if (!this.item.name) return 'No Name'
+      return this.item.name
+    },
+    itemImage(){
+      if (!this.item.image) return 'No Image'
+      return this.item.image
+    },
     idrPrice() {
+      if (!this.item.price) return 'NaN'
       if (this.item.price == 0) return 'Free'
       return 'Rp. '+ this.formatNumber(this.item.price)
     },
     stockNum() {
+      if (!this.item.stock) return 'Nan'
       if (this.item.stock == 0) return 'Out of Stock'
       return this.formatNumber(this.item.stock)
     }
@@ -39,8 +53,7 @@ export default {
     },
     deleteProduct(itemId){
       let {state, commit, dispatch} = this.$store
-      axios.delete(state.baseURL + '/products/'+itemId, 
-        { },
+      axios.delete(state.baseURL + '/products/'+itemId,
         { headers:
           { access_token: state.access_token }
         })

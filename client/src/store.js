@@ -21,7 +21,7 @@ const store = new Vuex.Store({
     toggleAddProduct (state) {
       state.addProduct = !state.addProduct
     },
-    SHOWERROR (state, payload){
+    SHOWERROR (state, payload) {
       state.errMsg = payload
     },
     INITSTORE (state) {

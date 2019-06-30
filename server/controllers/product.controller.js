@@ -51,7 +51,7 @@ class ControllerProduct {
 
         Cart.updateOne({_id: cart._id}, cart)
         .then(updatedCart => {
-          console.log({updatedCart})
+          // console.log({updatedCart})
         })
       })
 
@@ -81,7 +81,7 @@ class ControllerProduct {
 
   static deleteImage(req, res, next){
     // console.log({productControllerReqBody:req.body})
-    console.log({req})
+    // console.log({req})
     return res.send("deleted image")
   }
 }

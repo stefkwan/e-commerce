@@ -35,6 +35,8 @@ const authProduct = (req, res, next) => {
 		if (result){
 			if (admins.includes(userEmail)){
 				next()//logged in user is an admin
+			} else {
+				next({status: 403, message:"you are not an admin"})
 			}
 		} else {
 			next({status: 403, message:"only admins can change products"})
@@ -93,6 +95,8 @@ const authAdmin = (req, res, next) => {
 		if (result){
 			if (admins.includes(userEmail)){
 				next()//logged in user is an admin
+			} else {
+				next({status: 403, message:"you are not an admin"})
 			}
 		} else {
 			next({status: 403, message:"only admins can access this page"})

@@ -29,7 +29,7 @@ after(done => {
 
 describe('User adding/deleting products to Cart', () => {
     //create a new cart when user register or checks out,
-    let access_token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0Y2FydEBlY29tbWVyY2UuY29tIn0.TVEsf4-9QIylxQjSVCaFQVyQVfrVCNDFYRUtEEUcYOE`
+    let access_token
     //cart has userID of new/logged in user and status ""
     describe('creating a new cart POST /cart', () => {
         describe('create new user first, POST /users', () => {
@@ -90,9 +90,7 @@ describe('User adding/deleting products to Cart', () => {
             })
         })
 
-		//should also create a new cart with userID = this user ID and status = ""
         describe('then create cart for the user POST /cart', () => {
-
             it('should send an cart object with 200 status', done => {
                 chai.request(app)
                     .post('/cart')
@@ -173,11 +171,27 @@ describe('User adding/deleting products to Cart', () => {
                     console.log(err)
                 })
         })
+
+        it('should get error because user not loggged in', done => {
+            chai.request(app)
+                .get('/cart')
+                .then(res => {
+                    expect(res).to.have.status(403)
+                    expect(res).to.have.property('text')
+                    expect(res).to.have.property('statusCode')
+                    expect(res.statusCode).to.equal(403)
+                    expect(res.text).to.equal('"user not logged in"')
+
+                    done()
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        })
     })
 
     let productId = "product ID"
     describe('create a product POST /products', () => {
-    	//login admin first
         it('should send an product object with 201 status', done => {
             chai.request(app)
                 .post('/products')
@@ -186,7 +200,7 @@ describe('User adding/deleting products to Cart', () => {
                     name: "nama produk baru",
                     image: "url image baru",
                     price: 205000,
-                    stock: 25
+                    stock: 1
                 })
                 .then(res => {
                     expect(res).to.have.status(201)
@@ -202,7 +216,7 @@ describe('User adding/deleting products to Cart', () => {
                     expect(newProduct.name).to.equal('nama produk baru');
                     expect(newProduct.image).to.equal('url image baru');
                     expect(newProduct.price).to.equal(205000);
-                    expect(newProduct.stock).to.equal(25);
+                    expect(newProduct.stock).to.equal(1);
 
                     productId = newProduct._id
 
@@ -217,8 +231,7 @@ describe('User adding/deleting products to Cart', () => {
     //adding/deleting products from cart
     describe('PATCH /cart/add and /cart/del', () => {
         describe('adding product to cart, PATCH /cart/add', function() {
-            // this.timeout(5000)
-            it('should send an object with 200 status', done => {
+            it('should get 200 status, added product to cart', done => {
                 chai.request(app)
                     .patch('/cart/add')
                     .set('access_token', access_token)
@@ -246,6 +259,63 @@ describe('User adding/deleting products to Cart', () => {
                         expect(cart.count).to.have.lengthOf(1)
                         expect(cart.dateAdded).to.have.lengthOf(1)
                         expect(cart.status).to.equal('')
+
+                        expect(cart.products[0]).to.equal(productId)
+                        expect(cart.count[0]).to.have.equal(1)
+                        done()
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            })
+
+            it('should not be able to add product because product stock is lower', done => {
+                chai.request(app)
+                    .patch('/cart/add')
+                    .set('access_token', access_token)
+                    .send({
+                        productId: productId
+                    })
+                    .then(res => {
+                        expect(res).to.have.status(200)
+                        let cart = res.body
+                        expect(cart).to.have.property('products') //ref to products schema
+                        expect(cart).to.have.property('count')
+                        expect(cart).to.have.property('dateAdded')
+                        expect(cart).to.have.property('status')
+                        expect(cart).to.have.property('userId')
+
+                        expect(cart.products).to.be.a('array')
+                        expect(cart.count).to.be.a('array')
+                        expect(cart.dateAdded).to.be.a('array')
+                        expect(cart.status).to.be.a('string') //"" or "checked-out"
+
+                        expect(cart.products).to.have.lengthOf(1)
+                        expect(cart.count).to.have.lengthOf(1)
+                        expect(cart.dateAdded).to.have.lengthOf(1)
+                        expect(cart.status).to.equal('')
+
+                        expect(cart.products[0]).to.equal(productId)
+                        expect(cart.count[0]).to.have.equal(1)
+                        done()
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            })
+
+            it('should get error 403 because user not logged in', done => {
+                chai.request(app)
+                    .patch('/cart/add')
+                    .send({
+                        productId: productId
+                    })
+                    .then(res => {
+                        expect(res).to.have.status(403)
+                        expect(res).to.have.property('text')
+                        expect(res).to.have.property('statusCode')
+                        expect(res.statusCode).to.equal(403)
+                        expect(res.text).to.equal('"user not logged in"')
                         done()
                     })
                     .catch(err => {
@@ -269,6 +339,40 @@ describe('User adding/deleting products to Cart', () => {
 
                         //check from access token who is logged in, 
                         //then add to logged in user's cart
+                        let cart = res.body
+                        expect(cart).to.have.property('products') //ref to products schema
+                        expect(cart).to.have.property('count')
+                        expect(cart).to.have.property('dateAdded')
+                        expect(cart).to.have.property('status')
+                        expect(cart).to.have.property('userId')
+
+                        expect(cart.products).to.be.an('array')
+                        expect(cart.count).to.be.an('array')
+                        expect(cart.dateAdded).to.be.an('array')
+                        expect(cart.status).to.be.a('string') //"" or "checked-out"
+
+                        expect(cart.products).to.have.lengthOf(0)
+                        expect(cart.count).to.have.lengthOf(0)
+                        expect(cart.dateAdded).to.have.lengthOf(0)
+                        expect(cart.status).to.equal('')
+                        done()
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            })
+            
+            it('should not be able to decrement object because it is deleted from cart when its qty is 0 in cart', done => {
+
+                chai.request(app)
+                    .patch('/cart/del')
+                    .set('access_token', access_token)
+                    .send({
+                        productId: productId
+                    })
+                    .then(res => {
+                        expect(res).to.have.status(200)
+
                         let cart = res.body
                         expect(cart).to.have.property('products') //ref to products schema
                         expect(cart).to.have.property('count')

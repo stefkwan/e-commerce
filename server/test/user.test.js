@@ -40,6 +40,28 @@ describe('Users CRUD', () => {
 				console.log(err)
 			})
 		})
+
+		it('to get error invalid email', done => {
+			chai.request(app)
+			.post('/users')
+			.send({
+				email: "123",
+				password: "password user"
+			})
+			.then( res => {
+				expect(res).to.have.status(500)
+				expect(res).to.have.property('text')
+				expect(res).to.have.property('statusCode')
+				expect(res.statusCode).to.equal(500)
+				expect(res.text).to.equal('"User validation failed: email: invalid email format"')
+
+          		done()
+			})
+			.catch(err => {
+				console.log(err)
+			})
+		})
+
 	})
 
 	let access_token
@@ -64,6 +86,48 @@ describe('Users CRUD', () => {
 				console.log(err)
 			})
 		})
+
+		it('to get error wrong email', done => {
+			chai.request(app)
+			.post('/users/login')
+			.send({
+				email: "unregistered@mail.com", 
+				password: "password"
+			})
+			.then( res => {
+				expect(res).to.have.status(400)
+				expect(res).to.have.property('text')
+				expect(res).to.have.property('statusCode')
+				expect(res.statusCode).to.equal(400)
+				expect(res.text).to.equal('"Wrong email"')
+
+				done()
+			})
+			.catch( err => {
+				console.log(err)
+			})
+		})
+
+		it('to get error wrong password', done => {
+			chai.request(app)
+			.post('/users/login')
+			.send({
+				email: "a@a.com", 
+				password: "password salah"
+			})
+			.then( res => {
+				expect(res).to.have.status(400)
+				expect(res).to.have.property('text')
+				expect(res).to.have.property('statusCode')
+				expect(res.statusCode).to.equal(400)
+				expect(res.text).to.equal('"Wrong password"')
+
+				done()
+			})
+			.catch( err => {
+				console.log(err)
+			})
+		})
 	})
 
 	describe('POST /users', () => {
@@ -72,7 +136,7 @@ describe('Users CRUD', () => {
 			.post('/users')
 			.send({
 				name: "nama admin", 
-				email: "admin1@ecommerce.com", 
+				email: "admin2@ecommerce.com", 
 				address: "alamat user",
 				password: "password admin"
 			})
@@ -88,7 +152,7 @@ describe('Users CRUD', () => {
 				expect(newUser).to.have.property('password')
 
           		expect(newUser.name).to.equal('nama admin');
-          		expect(newUser.email).to.equal('admin1@ecommerce.com');
+          		expect(newUser.email).to.equal('admin2@ecommerce.com');
           		expect(newUser.address).to.equal('alamat user');
 
           		done()
@@ -106,7 +170,7 @@ describe('Users CRUD', () => {
 			chai.request(app)
 			.post('/users/login')
 			.send({
-				email: "admin1@ecommerce.com", 
+				email: "admin2@ecommerce.com", 
 				password: "password admin"
 			})
 			.then( res => {
@@ -132,6 +196,23 @@ describe('Users CRUD', () => {
 				//return list of users if admin
 				expect(res).to.have.status(200);
 				expect(res.body).to.be.an('array');
+				done()
+			})
+			.catch( err => {
+				console.log(err)
+			})
+		})
+
+		it('to get error 403 because user is not admin', done => {
+			chai.request(app)
+			.get('/users')
+			.set('access_token', access_token)
+			.then( res => {
+				expect(res).to.have.status(403)
+				expect(res).to.have.property('text')
+				expect(res).to.have.property('statusCode')
+				expect(res.statusCode).to.equal(403)
+				expect(res.text).to.equal('"you are not an admin"')
 				done()
 			})
 			.catch( err => {

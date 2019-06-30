@@ -70,7 +70,7 @@ const store = new Vuex.Store({
         })
     },
     editProduct (context, payload) {
-      // payload is: 
+      // payload is:
       // form: {
       //   id: 'product id'
       //   name: 'new name',
@@ -79,14 +79,14 @@ const store = new Vuex.Store({
       //   stock: 0,
       //   oldImage: 'old image url'
       // }
-      let uploadData ={
+      let uploadData = {
         name: payload.name,
         image: payload.image,
         price: payload.price,
         stock: payload.stock
       }
       let { state, dispatch } = context
-      axios.patch(state.baseURL + '/products/'+payload.id,
+      axios.patch(state.baseURL + '/products/' + payload.id,
         uploadData,
         { headers:
           { access_token: state.access_token }
@@ -99,10 +99,9 @@ const store = new Vuex.Store({
           // delete payload.image from gcs
           console.log(response)
         })
-
     },
     takeFromCart (context, payload) {
-      let { state, commit, dispatch } = context
+      let { state, dispatch } = context
       if (!state.currentCart) {
         dispatch('getCart')
         console.log('getting cart for user')
@@ -122,7 +121,7 @@ const store = new Vuex.Store({
       }
     },
     addToCart (context, payload) {
-      let { state, commit, dispatch } = context
+      let { state, dispatch } = context
       // add to cart, check user's cart
       if (!state.currentCart) {
         dispatch('getCart')
@@ -143,7 +142,7 @@ const store = new Vuex.Store({
       }
     },
     getProducts (context) {
-      let { state, commit, dispatch } = context
+      let { state, commit } = context
       console.log('getProducts')
       axios.get(state.baseURL + '/products',
         {
@@ -160,7 +159,7 @@ const store = new Vuex.Store({
         })
     },
     createCart (context) {
-      let { state, commit, dispatch } = context
+      let { state, dispatch } = context
       axios.post(state.baseURL + '/cart', {},
         {
           headers: {

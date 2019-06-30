@@ -45,14 +45,16 @@ class ControllerProduct {
       // delete deletedProduct from all carts containing it
       cartsArray.forEach(cart => {
         let index = cart.products.indexOf(productId)
-        cart.products.splice(index, 1)
-        cart.count.splice(index, 1)
-        cart.dateAdded.splice(index, 1)
+        if (index >= 0) {
+          cart.products.splice(index, 1)
+          cart.count.splice(index, 1)
+          cart.dateAdded.splice(index, 1)
 
-        Cart.updateOne({_id: cart._id}, cart)
-        .then(updatedCart => {
-          // console.log({updatedCart})
-        })
+          Cart.updateOne({_id: cart._id}, cart)
+          .then(updatedCart => {
+            // console.log({updatedCart})
+          })
+        }
       })
 
       res.json(deletedProduct)

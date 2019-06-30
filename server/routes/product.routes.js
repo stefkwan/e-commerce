@@ -17,8 +17,9 @@ const isAuthorized = require('../middleware/auth.js').authProduct
 // })
 
 // /products
-router.use(isAuthenticated)
 router.get('/', controllerProduct.findAll)
+
+router.use(isAuthenticated)
 router.get('/:id', controllerProduct.findOne)
 
 router.use(isAuthorized)

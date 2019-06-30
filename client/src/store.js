@@ -69,9 +69,12 @@ const store = new Vuex.Store({
           console.log(response)
         })
     },
-    takeFromCart(context, payload){
-      let {state, commit, dispatch} = context
-      if(!state.currentCart){
+    editProduct (context, payload) {
+
+    },
+    takeFromCart (context, payload) {
+      let { state, commit, dispatch } = context
+      if (!state.currentCart) {
         dispatch('getCart')
         console.log('getting cart for user')
       } else {
@@ -81,7 +84,7 @@ const store = new Vuex.Store({
             { access_token: state.access_token }
           })
           .then(({ data }) => {
-            console.log({takeFromCart: data})
+            console.log({ takeFromCart: data })
             dispatch('getCart')
           })
           .catch(({ response }) => {
@@ -102,7 +105,7 @@ const store = new Vuex.Store({
             { access_token: state.access_token }
           })
           .then(({ data }) => {
-            console.log({addToCart: data})
+            console.log({ addToCart: data })
             dispatch('getCart')
           })
           .catch(({ response }) => {
@@ -137,7 +140,7 @@ const store = new Vuex.Store({
         })
         .then(({ data }) => {
           console.log('created cart for user')
-          dispatch('getCart') //get populated cart
+          dispatch('getCart') // get populated cart
         })
         .catch(({ response }) => {
           console.log('error creating cart for user: ', response)

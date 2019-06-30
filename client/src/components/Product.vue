@@ -1,6 +1,6 @@
 <template>
   <div class="product">
-    <b-card :title="itemName" :img-src="itemImage" img-alt="Image" img-top style="width: 10rem;" class="mb-2 overflow-hidden">
+    <b-card v-if="editingProduct===false" :title="itemName" :img-src="itemImage" img-alt="Image" img-top style="width: 10rem;" class="mb-2 overflow-hidden">
       <b-card-text>
       Price: {{idrPrice}}
       </b-card-text>
@@ -8,19 +8,26 @@
       Stock: {{stockNum}}
       </b-card-text>
       <b-button class="mb-2" @click="addToCart(itemId)" href="#" variant="primary">Add to Cart</b-button>
-      <b-button class="mb-2" v-if="$store.state.isAdmin && $store.state.loggedIn" @click="editProduct(itemId)" href="#" variant="secondary">Edit</b-button>
+      <b-button class="mb-2" v-if="$store.state.isAdmin && $store.state.loggedIn" @click="toggleEditProduct" href="#" variant="secondary">Edit</b-button>
       <b-button v-if="$store.state.isAdmin && $store.state.loggedIn" @click="deleteProduct(itemId)" href="#" variant="danger">Delete</b-button>
     </b-card>
+    <!-- <router-view></router-view> -->
+    <EditProduct v-else :oldform="item" @toggleEditProduct="toggleEditProduct"></EditProduct>
   </div>
 </template>
 <script>
 import axios from 'axios'
+import EditProduct from '@/components/EditProduct.vue'
 export default {
   name: 'Product',
   props: ['item'],
   data () {
     return {
+      editingProduct: false
     }
+  },
+  components: {
+    EditProduct
   },
   created () {},
   computed: {
@@ -33,8 +40,9 @@ export default {
       return this.item.name
     },
     itemImage(){
-      if (!this.item.image) return 'No Image'
-      return this.item.image
+      let thisImage = this.item.image
+      if (!thisImage) return 'No Image'
+      return thisImage
     },
     idrPrice() {
       if (!this.item.price) return 'NaN'
@@ -48,9 +56,6 @@ export default {
     }
   },
   methods: {
-    editProduct(itemId){
-
-    },
     deleteProduct(itemId){
       let {state, commit, dispatch} = this.$store
       axios.delete(state.baseURL + '/products/'+itemId,
@@ -77,7 +82,10 @@ export default {
     },
     goToLoginPage(){
       this.$router.push('/user/login')
-    }
+    },
+    toggleEditProduct () {
+      this.editingProduct = !this.editingProduct
+    },
   }
 }
 

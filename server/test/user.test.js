@@ -7,22 +7,6 @@ chai.use(chaiHttp);
 var expect = require('chai').expect
 
 describe('Users CRUD', () => {
-	describe('GET /users', () => {
-		it('to send array of users with 200 status', done => {
-			chai.request(app)
-			.get('/users')
-			.then( res => {
-				//return list of users
-				expect(res).to.have.status(200);
-				expect(res.body).to.be.an('array');
-				done()
-			})
-			.catch( err => {
-				console.log(err)
-			})
-		})
-	})
-
 	describe('POST /users', () => {
 		it('to send an object with 201 status', done => {
 			chai.request(app)
@@ -74,6 +58,80 @@ describe('Users CRUD', () => {
 				expect(res.body.access_token).to.be.a('string')
 
 				access_token = (res.body.access_token)
+				done()
+			})
+			.catch( err => {
+				console.log(err)
+			})
+		})
+	})
+
+	describe('POST /users', () => {
+		it('to send an object with 201 status', done => {
+			chai.request(app)
+			.post('/users')
+			.send({
+				name: "nama admin", 
+				email: "admin1@ecommerce.com", 
+				address: "alamat user",
+				password: "password admin"
+			})
+			.then( res => {
+				expect(res).to.have.status(201)
+
+				let newUser = res.body
+				expect(newUser).to.be.an('object')
+
+				expect(newUser).to.have.property('name')
+				expect(newUser).to.have.property('email')
+				expect(newUser).to.have.property('address')
+				expect(newUser).to.have.property('password')
+
+          		expect(newUser.name).to.equal('nama admin');
+          		expect(newUser.email).to.equal('admin1@ecommerce.com');
+          		expect(newUser.address).to.equal('alamat user');
+
+          		done()
+			})
+			.catch(err => {
+				console.log(err)
+			})
+		})
+	})
+
+	let access_token_admin
+
+	describe('POST /users/login', () => {
+		it('to send array of users with 200 status', done => {
+			chai.request(app)
+			.post('/users/login')
+			.send({
+				email: "admin1@ecommerce.com", 
+				password: "password admin"
+			})
+			.then( res => {
+				expect(res).to.have.status(200)
+				expect(res.body).to.have.property('access_token')
+				expect(res.body.access_token).to.be.a('string')
+
+				access_token_admin = (res.body.access_token)
+				done()
+			})
+			.catch( err => {
+				console.log(err)
+			})
+		})
+	})
+
+	describe('GET /users', () => {
+		it('to send array of users with 200 status', done => {
+			chai.request(app)
+			.get('/users')
+			.set('access_token', access_token_admin)
+			.then( res => {
+				//return list of users if admin
+				expect(res).to.have.status(200);
+				expect(res.body).to.be.an('array');
 				done()
 			})
 			.catch( err => {

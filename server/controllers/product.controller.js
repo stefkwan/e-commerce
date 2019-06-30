@@ -60,8 +60,8 @@ class ControllerProduct {
   }
 
   static deleteImage(req, res, next){
-    console.log({productControllerReq:req})
-    return res.send("delete image at controller")
+    // console.log({productControllerReqBody:req.body})
+    return res.send("deleted image")
   }
 }
 

@@ -9,6 +9,8 @@ const storage = new Storage({
 	keyFilename: GOOGLE_CLOUD_KEYFILE,
 });
 
+const path = require('path');
+
 exports.storage = storage
 
 /**
@@ -41,13 +43,15 @@ return bucket.upload(localFilePath, options)
 };
 
 exports.deleteFileFromGCS = (localFilePath, bucketName, options) => {
+  // console.log({gcsHelperdelete: options})
   options = options || {};
   const bucket = storage.bucket(bucketName);
   const fileName = path.basename(localFilePath);
+  console.log({fileName})
   const file = bucket.file(fileName);
-  debugger
   file.delete()
   .then ( function(data) {
+    console.log({data})
     return data[0] //apiResponse
   })
 

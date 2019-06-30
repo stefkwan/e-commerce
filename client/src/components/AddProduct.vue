@@ -1,21 +1,5 @@
 <template>
 <div class="product d-inline-flex flex-column">
-  <!-- name image price stock -->
-  <b-alert
-    :show="dismissCountDown"
-    dismissible
-    variant="danger"
-    @dismissed="dismissCountDown=0"
-    @dismiss-count-down="countDownChanged"
-  >
-    <p>{{errorMsg}}. Dimissing in {{dismissCountDown}} seconds...</p>
-    <b-progress
-      variant="danger"
-      :max="dismissSecs"
-      :value="dismissCountDown"
-      height="4px"
-    ></b-progress>
-  </b-alert>
   <div v-if="loading" class="spinner-border text-primary" role="status">
     <span class="sr-only">Loading...</span>
   </div>
@@ -93,9 +77,6 @@ export default {
         price: 0,
         stock: 0
       },
-      dismissSecs: 10,
-      dismissCountDown: 0,
-      errorMsg: '',
       loading: false
     }
   },
@@ -109,13 +90,6 @@ export default {
     }
   },
   methods: {
-    countDownChanged(dismissCountDown) {
-      this.dismissCountDown = dismissCountDown
-    },
-    showAlert(msg) {
-      this.dismissCountDown = this.dismissSecs
-      this.errorMsg = msg
-    },
     onSubmit () {
       // process form.image from file to url
       this.loading = true
@@ -145,7 +119,7 @@ export default {
       })
       .catch(({response}) => {
         console.log("created error:",response)
-        this.showAlert(response)
+        this.$store.commit('SHOWERROR',response.data)
         this.loading = false
       })
     },

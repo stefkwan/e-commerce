@@ -45,12 +45,12 @@ export default {
       return thisImage
     },
     idrPrice() {
-      if (!this.item.price) return 'NaN'
+      if (this.item.price == null || this.item.price == undefined) return 'NaN'
       if (this.item.price == 0) return 'Free'
       return 'Rp. '+ this.formatNumber(this.item.price)
     },
     stockNum() {
-      if (!this.item.stock) return 'Nan'
+      if (this.item.stock == null || this.item.stock == undefined) return 'Nan'
       if (this.item.stock == 0) return 'Out of Stock'
       return this.formatNumber(this.item.stock)
     }
@@ -66,6 +66,7 @@ export default {
           console.log({deleteProduct: data})
           dispatch('getProducts') //get updated products
           dispatch('deleteImageFromGCS', data.image) // delete the old image
+          dispatch('getCart')
         })
         .catch(({ response }) => {
           console.log('error at deleting product:', response)

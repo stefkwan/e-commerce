@@ -33,9 +33,29 @@ class ControllerProduct {
   }
 
   static deleteOne(req, res, next){
-    Product.findOneAndDelete({_id: req.params.id})
+    let productId = req.params.id
+    let deletedProduct
+    Product.findOneAndDelete({_id: productId})
     .then(deleted => {
-      res.json(deleted)
+      deletedProduct = deleted
+      // update all carts that contain this product
+      return Cart.find({products: productId})
+    })
+    .then (cartsArray => {
+      // delete deletedProduct from all carts containing it
+      cartsArray.forEach(cart => {
+        let index = cart.products.indexOf(productId)
+        cart.products.splice(index, 1)
+        cart.count.splice(index, 1)
+        cart.dateAdded.splice(index, 1)
+
+        Cart.updateOne({_id: cart._id}, cart)
+        .then(updatedCart => {
+          console.log({updatedCart})
+        })
+      })
+
+      res.json(deletedProduct)
     })
     .catch(next)
   }
@@ -61,6 +81,7 @@ class ControllerProduct {
 
   static deleteImage(req, res, next){
     // console.log({productControllerReqBody:req.body})
+    console.log({req})
     return res.send("deleted image")
   }
 }

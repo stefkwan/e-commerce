@@ -48,7 +48,6 @@ exports.sendUploadToGCS = (req, res, next) => {
 exports.deleteUploadFromGCS = (req, res, next) => {
   // console.log({gcsMiddlewareReq: req.body.imageURL})
   const bucketName = req.body.bucketName || DEFAULT_BUCKET_NAME;
-  gcsHelpers.deleteFileFromGCS(req.body.imageURL, bucketName, null)
-  console.log('after delete')
-  next()
+  next(gcsHelpers.deleteFileFromGCS(req.body.imageURL, bucketName, null))
+  // console.log('after delete')
 }

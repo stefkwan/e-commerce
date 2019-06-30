@@ -51,8 +51,11 @@ exports.deleteFileFromGCS = (localFilePath, bucketName, options) => {
   const file = bucket.file(fileName);
   file.delete()
   .then ( function(data) {
-    console.log({data})
+    // console.log({data})
     return data[0] //apiResponse
+  })
+  .catch( error => {
+    return error
   })
 
   // return `gs://${bucketName}/${filename} deleted.`

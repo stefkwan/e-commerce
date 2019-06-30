@@ -27,7 +27,7 @@ export default {
         let {count} = currentCart
         const add = (a, b) => a + b
         let subTotal = count.reduce(add)
-        if (subTotal === 0) return null
+        if (subTotal === 0) return 0
         return subTotal
       }
       return null

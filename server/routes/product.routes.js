@@ -30,6 +30,7 @@ router.post('/uploadImage',
 	controllerProduct.uploadImage)
 
 router.post('/deleteImage',
-	gcsMiddlewares.deleteUploadFromGCS, controllerProduct.deleteImage)
+	gcsMiddlewares.deleteUploadFromGCS, 
+	controllerProduct.deleteImage)
 
 module.exports = router

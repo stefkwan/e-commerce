@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const hashPassword = require('../helpers/bcrypt.js').hashPassword
 
-const userSchema = new Schema({
+const productSchema = new Schema({
 	name: {
 		type: String,
 		default: "no name"
@@ -23,6 +23,6 @@ const userSchema = new Schema({
 	}
 });
 
-const Product = mongoose.model('Product',userSchema)
+const Product = mongoose.model('Product', productSchema)
 
 module.exports = Product

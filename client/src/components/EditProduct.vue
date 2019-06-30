@@ -1,7 +1,7 @@
 <template>
 <div class="product d-inline-flex flex-column">
   <!-- name image price stock -->
-  <b-card class="mb-2 overflow-hidden">
+  <b-card class="mb-1 overflow-hidden" style="width: 12rem;" :img-src="imagePreview">
     <b-alert
       :show="dismissCountDown"
       dismissible
@@ -43,9 +43,6 @@
       <b-form-file
         v-model="form.image"
         :state="Boolean(form.image)"
-        placeholder="Choose a file..."
-        drop-placeholder="Drop file here..."
-        required
       ></b-form-file>
       <div class="mt-3">Selected Image: {{ form.image ? form.image.name : '' }}</div>
       </b-form-group>
@@ -110,6 +107,15 @@ export default {
     this.form.image = this.oldform.image+''
     this.form.price = this.oldform.price+0
     this.form.stock = this.oldform.stock+0
+  },
+  computed: {
+    imagePreview(){
+      if (typeof this.form.image == typeof "string"){
+        return this.form.image
+      } else {
+        return URL.createObjectURL(this.form.image)
+      }
+    }
   },
   methods: {
     countDownChanged(dismissCountDown) {

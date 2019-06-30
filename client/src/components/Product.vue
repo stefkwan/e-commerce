@@ -1,15 +1,15 @@
 <template>
   <div class="product">
-    <b-card v-if="editingProduct===false" :title="itemName" :img-src="itemImage" img-alt="Image" img-top style="width: 10rem;" class="mb-2 overflow-hidden">
+    <b-card v-if="editingProduct===false" :title="itemName" :img-src="itemImage" img-alt="Image" img-top style="width: 12rem;" class="mb-1 overflow-hidden">
       <b-card-text>
       Price: {{idrPrice}}
       </b-card-text>
       <b-card-text>
       Stock: {{stockNum}}
       </b-card-text>
-      <b-button class="mb-2" @click="addToCart(itemId)" href="#" variant="primary">Add to Cart</b-button>
-      <b-button class="mb-2" v-if="$store.state.isAdmin && $store.state.loggedIn" @click="toggleEditProduct" href="#" variant="secondary">Edit</b-button>
-      <b-button v-if="$store.state.isAdmin && $store.state.loggedIn" @click="deleteProduct(itemId)" href="#" variant="danger">Delete</b-button>
+      <b-button class="mb-1" @click="addToCart(itemId)" href="#" variant="primary">Add to Cart</b-button>
+      <b-button class="mb-1" v-if="$store.state.isAdmin && $store.state.loggedIn" @click="toggleEditProduct" href="#" variant="secondary">Edit Product</b-button>
+      <b-button class="mb-1" v-if="$store.state.isAdmin && $store.state.loggedIn" @click="deleteProduct(itemId)" href="#" variant="danger">Delete</b-button>
     </b-card>
     <!-- <router-view></router-view> -->
     <EditProduct v-else :oldform="item" @toggleEditProduct="toggleEditProduct"></EditProduct>

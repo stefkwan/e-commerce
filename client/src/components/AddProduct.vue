@@ -43,10 +43,10 @@
       v-model="form.image"
       :state="Boolean(form.image)"
       placeholder="Choose a file..."
-      drop-placeholder="Drop file here..."
       required
     ></b-form-file>
-    <div class="mt-3">Selected form.image: {{ form.image ? form.image.name : '' }}</div>
+    <div class="mt-3">Selected Image: {{ form.image ? form.image.name : '' }}</div>
+    <b-img thumbnail v-show="imagePreview" :src="imagePreview" alt="preview" height="240" width="240"></b-img>
     </b-form-group>
 
     <b-form-group
@@ -99,7 +99,15 @@ export default {
       loading: false
     }
   },
-  created () {},
+  computed: {
+    imagePreview(){
+      if (typeof this.form.image == typeof "string"){
+        return this.form.image
+      } else {
+        return URL.createObjectURL(this.form.image)
+      }
+    }
+  },
   methods: {
     countDownChanged(dismissCountDown) {
       this.dismissCountDown = dismissCountDown

@@ -126,38 +126,46 @@ export default {
       this.errorMsg = msg
     },
     onSubmit () {
-      // process form.image from file to url
-      this.loading = true
-      const image = this.form.image
-
-      let dataToUpload = new FormData();
-      dataToUpload.append('name', 'my-picture');
-      dataToUpload.append('image', image);
-
-      let baseURL = this.$store.state.baseURL
-      let access_token = this.$store.state.access_token
-
-      axios({
-        method: "POST",
-        url: baseURL+"/products/uploadImage",
-        data: dataToUpload,
-        headers:{
-          "access_token": access_token,
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      })
-      .then(({data}) => {
-        this.form.image = data
+      if (this.form.image == this.oldform.image){
+        // if form.image is not changed, it is still a url, skip uploading new image file to gcs
         this.form.oldImage = this.oldform.image
         this.$store.dispatch('editProduct', this.form)
         this.onReset()
         this.loading = false
-      })
-      .catch(({response}) => {
-        console.log("created error:",response)
-        this.showAlert(response)
-        this.loading = false
-      })
+      } else {
+        // process form.image from file to url
+        this.loading = true
+        const image = this.form.image
+
+        let dataToUpload = new FormData();
+        dataToUpload.append('name', 'my-picture');
+        dataToUpload.append('image', image);
+
+        let baseURL = this.$store.state.baseURL
+        let access_token = this.$store.state.access_token
+
+        axios({
+          method: "POST",
+          url: baseURL+"/products/uploadImage",
+          data: dataToUpload,
+          headers:{
+            "access_token": access_token,
+            "Content-Type": "application/x-www-form-urlencoded"
+          }
+        })
+        .then(({data}) => {
+          this.form.image = data
+          this.form.oldImage = this.oldform.image
+          this.$store.dispatch('editProduct', this.form)
+          this.onReset()
+          this.loading = false
+        })
+        .catch(({response}) => {
+          console.log("created error:",response)
+          this.showAlert(response)
+          this.loading = false
+        })
+      }
     },
     onReset(){
       this.form = {

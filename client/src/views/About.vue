@@ -1,5 +1,12 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <h3>Pick a design and we will print it on a shirt for you!</h3>
+    <img src='../assets/CustomShirt.jpg'/>
   </div>
 </template>
+
+<style scoped>
+img {
+	width: 50%;
+}
+</style>

@@ -118,7 +118,7 @@ export default {
         this.loading = false
       })
       .catch(({response}) => {
-        console.log("created error:",response)
+        // console.log("created error:",response)
         this.$store.commit('SHOWERROR',response.data)
         this.loading = false
       })
@@ -137,4 +137,14 @@ export default {
 
 </script>
 <style scoped>
+.product {
+  padding: 1em;
+  margin: 1em;
+  color: #fafafa;
+  font-weight: bold;
+  background-color: darkgrey;
+  border: solid #062399;
+  border-radius: 1em;
+  box-shadow: 0.2em 0.2em #775C9E;
+}
 </style>

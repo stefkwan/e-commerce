@@ -19,7 +19,7 @@ export default {
   computed: mapState(['errMsg']),
   watch: {
     errMsg (newVal, oldVal){
-      console.log(this.errMsg)
+      // console.log(this.errMsg)
       this.showAlert()
     }
   },

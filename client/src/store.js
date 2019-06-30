@@ -32,7 +32,7 @@ const store = new Vuex.Store({
       }
     },
     LOGOUT (state) {
-      console.log('logout mutation')
+      // console.log('logout mutation')
       state.loggedIn = false
       state = null
       localStorage.clear()
@@ -54,7 +54,7 @@ const store = new Vuex.Store({
     },
     UPDATECART (state, payload) {
       state.currentCart = payload
-      console.log({ cart: payload })
+      // console.log({ cart: payload })
     }
   },
   actions: {
@@ -69,7 +69,7 @@ const store = new Vuex.Store({
           dispatch('getProducts')
         })
         .catch(({ response }) => {
-          console.log(response)
+          // console.log(response)
           commit('SHOWERROR', response.data)
         })
     },
@@ -105,7 +105,7 @@ const store = new Vuex.Store({
           // fail to update product,
           // delete new image payload.image from gcs
           dispatch('deleteImageFromGCS', payload.image)
-          console.log(response)
+          // console.log(response)
           commit('SHOWERROR', response.data)
         })
     },
@@ -118,11 +118,11 @@ const store = new Vuex.Store({
         })
         .then(({ data }) => {
           // successfully deleted image from gcs
-          console.log({ imageDeleted: payload })
+          console.log({ imageDeletedFromGCS: payload })
         })
         .catch(({ response }) => {
           // fail to delete image from gcs
-          console.log(response)
+          // console.log(response)
           commit('SHOWERROR', response.data)
         })
     },
@@ -138,11 +138,11 @@ const store = new Vuex.Store({
             { access_token: state.access_token }
           })
           .then(({ data }) => {
-            console.log({ takeFromCart: data })
+            // console.log({ takeFromCart: data })
             dispatch('getCart')
           })
           .catch(({ response }) => {
-            console.log('error at dec 1 item from cart:', response)
+            // console.log('error at dec 1 item from cart:', response)
             commit('SHOWERROR', response.data)
           })
       }
@@ -160,18 +160,18 @@ const store = new Vuex.Store({
             { access_token: state.access_token }
           })
           .then(({ data }) => {
-            console.log({ addToCart: data })
+            // console.log({ addToCart: data })
             dispatch('getCart')
           })
           .catch(({ response }) => {
-            console.log('error at inc 1 item to cart:', response)
+            // console.log('error at inc 1 item to cart:', response)
             commit('SHOWERROR', response.data)
           })
       }
     },
     getProducts (context) {
       let { state, commit } = context
-      console.log('getProducts')
+      // console.log('getProducts')
       axios.get(state.baseURL + '/products',
         {
           headers: {
@@ -183,7 +183,7 @@ const store = new Vuex.Store({
           commit('UPDATEPRODUCTS', data)
         })
         .catch(({ response }) => {
-          console.log('error loading products: ', response)
+          // console.log('error loading products: ', response)
           commit('SHOWERROR', response.data)
         })
     },
@@ -196,11 +196,11 @@ const store = new Vuex.Store({
           }
         })
         .then(({ data }) => {
-          console.log('created cart for user')
+          // console.log('created cart for user')
           dispatch('getCart') // get populated cart
         })
         .catch(({ response }) => {
-          console.log('error creating cart for user: ', response)
+          // console.log('error creating cart for user: ', response)
           commit('SHOWERROR', response.data)
         })
     },
@@ -215,14 +215,14 @@ const store = new Vuex.Store({
         .then(({ data }) => {
           if (!data) { // if user has no default cart (status ""), create one
             dispatch('createCart')
-            console.log('creating new cart for user')
+            // console.log('creating new cart for user')
           } else {
-            console.log('retrieved cart for user: ', data)
+            // console.log('retrieved cart for user: ', data)
             commit('UPDATECART', data)
           }
         })
         .catch(({ response }) => {
-          console.log('error retrieving cart for user: ', response)
+          // console.log('error retrieving cart for user: ', response)
           commit('SHOWERROR', response.data)
         })
     }

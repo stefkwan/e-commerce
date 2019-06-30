@@ -3,12 +3,37 @@
     <div id="nav">
       <router-link to="/" exact>Home</router-link> |
       <router-link to="/user">User</router-link> |
-      <router-link to="/cart">Cart</router-link> |
+      <router-link to="/cart">Cart 
+        <b-badge v-if="totalQty">{{totalQty}}</b-badge>
+      </router-link> |
       <router-link to="/about">About</router-link>
     </div>
     <router-view/>
   </div>
 </template>
+
+<script>
+
+export default {
+  created(){
+    this.$store.dispatch('getCart')
+  },
+  computed: {
+    totalQty () {
+      let currentCart = this.$store.state.currentCart
+      if (!currentCart) return null
+      if (currentCart.count && currentCart.count.length > 0){
+        let {count} = currentCart
+        const add = (a, b) => a + b
+        let subTotal = count.reduce(add)
+        if (subTotal === 0) return null
+        return subTotal
+      }
+      return null
+    }
+  }
+}
+</script>
 
 <style>
 /*#062399 #775C9E*/

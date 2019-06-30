@@ -65,6 +65,7 @@ export default {
         .then(({ data }) => {
           console.log({deleteProduct: data})
           dispatch('getProducts') //get updated products
+          dispatch('deleteImageFromGCS', data.image) // delete the old image
         })
         .catch(({ response }) => {
           console.log('error at deleting product:', response)

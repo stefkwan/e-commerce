@@ -70,6 +70,35 @@ const store = new Vuex.Store({
         })
     },
     editProduct (context, payload) {
+      // payload is: 
+      // form: {
+      //   id: 'product id'
+      //   name: 'new name',
+      //   image: 'new image url',
+      //   price: 0,
+      //   stock: 0,
+      //   oldImage: 'old image url'
+      // }
+      let uploadData ={
+        name: payload.name,
+        image: payload.image,
+        price: payload.price,
+        stock: payload.stock
+      }
+      let { state, dispatch } = context
+      axios.patch(state.baseURL + '/products/'+payload.id,
+        uploadData,
+        { headers:
+          { access_token: state.access_token }
+        })
+        .then(({ data }) => {
+          // delete payload.oldImage from gcs
+          dispatch('getProducts')
+        })
+        .catch(({ response }) => {
+          // delete payload.image from gcs
+          console.log(response)
+        })
 
     },
     takeFromCart (context, payload) {

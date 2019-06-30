@@ -90,6 +90,7 @@ export default {
   data () {
     return {
       form: {
+        id: '',
         name: '',
         image: '',
         price: 0,
@@ -104,6 +105,7 @@ export default {
   props: ['oldform'],
   created () {
     // deep copy initial values
+    this.form.id = this.oldform._id
     this.form.name = this.oldform.name+''
     this.form.image = this.oldform.image+''
     this.form.price = this.oldform.price+0

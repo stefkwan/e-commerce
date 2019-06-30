@@ -4,19 +4,6 @@ const isAuthenticated = require('../middleware/auth.js').authentication
 const isAuthorized = require('../middleware/auth.js').authUser
 const isAdmin = require('../middleware/auth.js').authAdmin
 
-// router.delete('/', (req, res, next) => {
-// 	const User = require('../models').User
-
-// 	User
-// 	.deleteMany()
-// 	.then(result => {
-// 		res.json('Users collection cleared! ' + result.deletedCount);
-// 	})
-// 	.catch(function(err) {
-// 		next(err);
-// 	});
-// })
-
 // /users
 router.post('/', controllerUser.create) //register
 router.post('/login', controllerUser.login)

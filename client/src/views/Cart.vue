@@ -96,9 +96,9 @@ export default {
       let numProductsUpdated = 0;
 
       products.forEach( (product, index) => {
-        let newStock = product.stock - count[index]
+        product.stock -= count[index]
         axios.patch(state.baseURL + '/products/'+product._id, 
-        { stock: newStock},
+        product,
         { headers:
           { access_token: state.access_token }
         })

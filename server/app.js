@@ -25,7 +25,7 @@ app.use(express.json());
 app.use('/', routes);
 
 app.use(function(err, req, res, next) {
-  console.log(err);
+  // console.log(err);
   let status = err.status || 500
   let message = err.message || "error with no error message passed"
   res.status(status).json(message);

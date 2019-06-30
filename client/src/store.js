@@ -104,16 +104,16 @@ const store = new Vuex.Store({
           console.log(response)
         })
     },
-    deleteImageFromGCS(context, payload){
-      let {state} = context
+    deleteImageFromGCS (context, payload) {
+      let { state } = context
       axios.post(state.baseURL + '/products/deleteImage',
-        {imageURL: payload},
+        { imageURL: payload },
         { headers:
           { access_token: state.access_token }
         })
         .then(({ data }) => {
           // successfully deleted image from gcs
-          console.log({imageDeleted: payload})
+          console.log({ imageDeleted: payload })
         })
         .catch(({ response }) => {
           // fail to delete image from gcs

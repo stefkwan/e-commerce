@@ -1,12 +1,14 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/" exact>Home</router-link> |
-      <router-link to="/user">User</router-link> |
-      <router-link to="/cart">Cart 
+      <router-link to="/" exact>Home</router-link>
+      <span> | <router-link to="/user">User</router-link>
+      </span>
+      <span v-if="$store.state.loggedIn"> | <router-link to="/cart">Cart 
         <b-badge v-if="totalQty">{{totalQty}}</b-badge>
-      </router-link> |
-      <router-link to="/about">About</router-link>
+      </router-link>
+      </span><span> |
+      <router-link to="/about">About</router-link></span>
     </div>
     <router-view/>
   </div>

@@ -9,15 +9,19 @@
       </router-link>
       </span><span> |
       <router-link to="/about">About</router-link></span>
+      <ErrorMessage></ErrorMessage>
     </div>
     <router-view/>
   </div>
 </template>
 
 <script>
-
+import ErrorMessage from '@/components/ErrorMessage.vue'
 export default {
   name: 'App',
+  components: {
+    ErrorMessage
+  },
   created(){
     this.$store.dispatch('getCart')
   },

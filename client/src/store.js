@@ -15,11 +15,15 @@ const store = new Vuex.Store({
     access_token: '',
     products: [],
     addProduct: false,
-    isAdmin: false
+    isAdmin: false,
+    errMsg: ''
   },
   mutations: {
     toggleAddProduct (state) {
       state.addProduct = !state.addProduct
+    },
+    SHOWERROR (state, payload){
+      state.errMsg = payload
     },
     INITSTORE (state) {
       if (localStorage.getItem('store')) {
@@ -56,7 +60,7 @@ const store = new Vuex.Store({
   },
   actions: {
     addProduct (context, payload) {
-      let { state, dispatch } = context
+      let { state, commit, dispatch } = context
       axios.post(state.baseURL + '/products',
         payload,
         { headers:
@@ -67,6 +71,7 @@ const store = new Vuex.Store({
         })
         .catch(({ response }) => {
           console.log(response)
+          commit('SHOWERROR', response.data)
         })
     },
     editProduct (context, payload) {
@@ -85,7 +90,7 @@ const store = new Vuex.Store({
         price: payload.price,
         stock: payload.stock
       }
-      let { state, dispatch } = context
+      let { state, commit, dispatch } = context
       axios.patch(state.baseURL + '/products/' + payload.id,
         uploadData,
         { headers:
@@ -102,10 +107,11 @@ const store = new Vuex.Store({
           // delete new image payload.image from gcs
           dispatch('deleteImageFromGCS', payload.image)
           console.log(response)
+          commit('SHOWERROR', response.data)
         })
     },
     deleteImageFromGCS (context, payload) {
-      let { state } = context
+      let { state, commit } = context
       axios.post(state.baseURL + '/products/deleteImage',
         { imageURL: payload },
         { headers:
@@ -118,10 +124,11 @@ const store = new Vuex.Store({
         .catch(({ response }) => {
           // fail to delete image from gcs
           console.log(response)
+          commit('SHOWERROR', response.data)
         })
     },
     takeFromCart (context, payload) {
-      let { state, dispatch } = context
+      let { state, commit, dispatch } = context
       if (!state.currentCart) {
         dispatch('getCart')
         console.log('getting cart for user')
@@ -137,11 +144,12 @@ const store = new Vuex.Store({
           })
           .catch(({ response }) => {
             console.log('error at dec 1 item from cart:', response)
+            commit('SHOWERROR', response.data)
           })
       }
     },
     addToCart (context, payload) {
-      let { state, dispatch } = context
+      let { state, commit, dispatch } = context
       // add to cart, check user's cart
       if (!state.currentCart) {
         dispatch('getCart')
@@ -158,6 +166,7 @@ const store = new Vuex.Store({
           })
           .catch(({ response }) => {
             console.log('error at inc 1 item to cart:', response)
+            commit('SHOWERROR', response.data)
           })
       }
     },
@@ -176,10 +185,11 @@ const store = new Vuex.Store({
         })
         .catch(({ response }) => {
           console.log('error loading products: ', response)
+          commit('SHOWERROR', response.data)
         })
     },
     createCart (context) {
-      let { state, dispatch } = context
+      let { state, commit, dispatch } = context
       axios.post(state.baseURL + '/cart', {},
         {
           headers: {
@@ -192,6 +202,7 @@ const store = new Vuex.Store({
         })
         .catch(({ response }) => {
           console.log('error creating cart for user: ', response)
+          commit('SHOWERROR', response.data)
         })
     },
     getCart (context) {
@@ -213,6 +224,7 @@ const store = new Vuex.Store({
         })
         .catch(({ response }) => {
           console.log('error retrieving cart for user: ', response)
+          commit('SHOWERROR', response.data)
         })
     }
   }

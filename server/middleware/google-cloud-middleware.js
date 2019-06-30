@@ -44,3 +44,7 @@ exports.sendUploadToGCS = (req, res, next) => {
 
   stream.end(req.file.buffer);
 };
+
+exports.deleteUploadFromGCS = (req, res, next) => {
+  console.log({gcsMiddlewareReq: req})
+}

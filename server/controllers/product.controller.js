@@ -58,6 +58,11 @@ class ControllerProduct {
       return res.send(err)
     }
   }
+
+  static deleteImage(req, res, next){
+    console.log({productControllerReq:req})
+    return res.send("delete image at controller")
+  }
 }
 
 module.exports = ControllerProduct

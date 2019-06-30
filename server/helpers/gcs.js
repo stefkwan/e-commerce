@@ -39,3 +39,17 @@ return bucket.upload(localFilePath, options)
   .then(() => file.makePublic())
   .then(() => exports.getPublicUrl(bucketName, gcsName));
 };
+
+exports.deleteFileFromGCS = (localFilePath, bucketName, options) => {
+  options = options || {};
+  const bucket = storage.bucket(bucketName);
+  const fileName = path.basename(localFilePath);
+  const file = bucket.file(fileName);
+  debugger
+  file.delete()
+  .then ( function(data) {
+    return data[0] //apiResponse
+  })
+
+  // return `gs://${bucketName}/${filename} deleted.`
+}

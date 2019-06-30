@@ -18,14 +18,14 @@ const isAdmin = require('../middleware/auth.js').authAdmin
 // })
 
 // /users
-router.get('/', isAdmin, controllerUser.findAll)
-router.get('/history/:id', isAdmin, controllerUser.findHistory)
-
-router.post('/', controllerUser.create)
+router.post('/', controllerUser.create) //register
 router.post('/login', controllerUser.login)
 
 router.use(isAuthenticated)
 router.patch('/', isAuthorized, controllerUser.update)
 router.get('/history', isAuthorized, controllerUser.findHistory)
+
+router.get('/', isAdmin, controllerUser.findAll)
+router.get('/history/:id', isAdmin, controllerUser.findHistory)
 
 module.exports = router

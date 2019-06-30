@@ -47,7 +47,7 @@ exports.deleteFileFromGCS = (localFilePath, bucketName, options) => {
   options = options || {};
   const bucket = storage.bucket(bucketName);
   const fileName = path.basename(localFilePath);
-  console.log({fileName})
+  // console.log({fileName})
   const file = bucket.file(fileName);
   file.delete()
   .then ( function(data) {

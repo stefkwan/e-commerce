@@ -26,6 +26,7 @@
 	  <b-col><strong>{{totalPrice}}</strong></b-col>
 	  </b-list-group-item>
     </b-list-group>
+    <a v-if="$store.state.currentCart && loading == false" href="#" @click.prevent="deleteCart" class="btn btn-secondary m-1">Reset</a>
     <a v-if="$store.state.currentCart && loading == false" href="#" @click.prevent="checkout" class="btn btn-primary m-1">Check-out</a>
   </div>
 </template>
@@ -75,6 +76,23 @@ export default {
     }
   },
   methods: {
+    deleteCart(){
+      //delete cart then make a new one
+      this.loading = true
+      let {state, commit, dispatch} = this.$store
+      axios.delete(state.baseURL + '/cart',
+        { headers:
+          { access_token: state.access_token }
+        })
+      .then(({data}) => {
+        console.log({deleteCart: data})
+        dispatch('getCart')
+        this.loading = false
+      })
+      .catch(({ response }) => {
+        console.log('error at deleting cart:', response)
+      })
+    },
     checkout(){
       this.loading = true
       let { state } = this.$store

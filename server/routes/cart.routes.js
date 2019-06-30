@@ -21,8 +21,11 @@ router.use(isAuthenticated)
 router.get('/', ControllerCarts.findOne)
 router.post('/', ControllerCarts.create)
 
+router.use(isAuthorized)
 router.patch('/checkout', ControllerCarts.checkout)
-router.patch('/add', isAuthorized, ControllerCarts.addProduct)
-router.patch('/del', isAuthorized, ControllerCarts.delProduct)
+router.patch('/add', ControllerCarts.addProduct)
+router.patch('/del', ControllerCarts.delProduct)
+
+router.delete('/', ControllerCarts.delete)
 
 module.exports = router

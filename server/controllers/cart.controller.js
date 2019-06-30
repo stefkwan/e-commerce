@@ -3,6 +3,13 @@ const Cart = require('../models/').Cart
 const Product = require('../models/').Product
 
 class ControllerCart {
+	static delete(req, res, next){
+		let userId = req.decode.id
+		Cart.findOneAndDelete({userId: userId, status: ""})
+		.then( result => {
+			res.json(result)
+		})
+	}
   
 	static findOne(req, res, next){
 		let userId = req.decode.id

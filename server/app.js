@@ -14,7 +14,14 @@ const port = 3000;
 var cors = require('cors')
 app.use(cors())
 
-mongoose.connect('mongodb://localhost:27017/ecommerce-' + process.env.NODE_ENV,  
+let dbName = 'mongodb://localhost:27017/ecommerce-' + process.env.NODE_ENV
+let password = process.env.dbPassword
+let collectionName = process.env.collectionName
+if (process.env.NODE_ENV === 'production') {
+	dbName = 'mongodb+srv://dbStefKwan:'+password+'@clusterhacktiv-9vqzv.gcp.mongodb.net/'+collectionName+'?retryWrites=true&w=majority'
+}
+
+mongoose.connect(dbName,
 	{useNewUrlParser: true});
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);

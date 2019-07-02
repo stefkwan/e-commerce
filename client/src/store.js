@@ -7,7 +7,7 @@ let admins = ['admin@ecommerce.com', 'admin1@ecommerce.com', 'admin2@ecommerce.c
 // /users /cart /products
 const store = new Vuex.Store({
   state: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://shirtify-server.stefkwan.com',
     loggedIn: false,
     currentUser: { name: '', email: '' },
     currentCart: null,

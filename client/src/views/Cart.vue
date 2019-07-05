@@ -28,13 +28,14 @@
 <script>
 import CartItem from '@/components/CartItem.vue'
 import axios from 'axios'
+import { mapState } from 'vuex'
 export default {
   name: 'cart',
   components: {
     CartItem
   },
   created () {
-    this.$store.dispatch('getCart')
+    if (loggedIn) this.$store.dispatch('getCart')
   },
   data () {
     return {
@@ -44,12 +45,12 @@ export default {
   },
   computed: {
     cproducts () {
-      let currentCart = this.$store.state.currentCart
+      let currentCart = this.currentCart
       if (!currentCart) return null
       return currentCart.products
     },
     totalPrice () {
-      let currentCart = this.$store.state.currentCart
+      let currentCart = this.currentCart
       if (!currentCart) return null
       let subTotal = 0
       let { products, count } = currentCart
@@ -60,7 +61,7 @@ export default {
       return 'Rp. ' + this.formatNumber(subTotal)
     },
     totalQty () {
-      let currentCart = this.$store.state.currentCart
+      let currentCart = this.currentCart
       if (!currentCart) return null
       if (currentCart.count && currentCart.count.length > 0) {
         let { count } = currentCart
@@ -70,7 +71,8 @@ export default {
         return this.formatNumber(subTotal)
       }
       return null
-    }
+    },
+    ...mapState(['loggedIn', 'currentCart'])
   },
   methods: {
     deleteCart () {

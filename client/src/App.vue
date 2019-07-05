@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 export default {
   name: 'App',
@@ -23,7 +24,7 @@ export default {
     ErrorMessage
   },
   created(){
-    this.$store.dispatch('getCart')
+    if(this.loggedIn) this.$store.dispatch('getCart')
   },
   computed: {
     totalQty () {
@@ -37,7 +38,8 @@ export default {
         return subTotal
       }
       return null
-    }
+    },
+    ...mapState(['loggedIn'])
   }
 }
 </script>
